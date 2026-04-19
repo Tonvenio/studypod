@@ -29,8 +29,8 @@ const AUTO_RENDER_COUNT = 2; // Auto-render audio for first N cards
 export default function NewDeckPageWrapper() {
   return (
     <Suspense fallback={
-      <main className="min-h-screen bg-[#0F172A] text-[#F8FAFC] flex items-center justify-center">
-        <div className="text-[#94A3B8]">Loading...</div>
+      <main className="min-h-screen bg-[#0B0E17] text-[#E8F0E8] flex items-center justify-center">
+        <div className="text-[#6B7A99]">Loading...</div>
       </main>
     }>
       <NewDeckPage />
@@ -151,22 +151,22 @@ function NewDeckPage() {
   }
 
   const difficultyColor = (d: number) => {
-    if (d <= 2) return 'bg-[#10B981]/20 text-[#10B981]';
-    if (d <= 3) return 'bg-[#F59E0B]/20 text-[#F59E0B]';
-    return 'bg-[#FB7185]/20 text-[#FB7185]';
+    if (d <= 2) return 'bg-[#00E896]/20 text-[#00E896]';
+    if (d <= 3) return 'bg-[#FFD93D]/20 text-[#FFD93D]';
+    return 'bg-[#FF6B8A]/20 text-[#FF6B8A]';
   };
 
   const difficultyLabel = (d: number) =>
     ['', 'Basic', 'Easy', 'Medium', 'Hard', 'Expert'][d] || 'Medium';
 
   return (
-    <main className="min-h-screen bg-[#0F172A] text-[#F8FAFC]">
-      <nav className="border-b border-[#334155]">
+    <main className="min-h-screen bg-[#0B0E17] text-[#E8F0E8]">
+      <nav className="border-b border-[#2A3352]">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="text-xl font-bold">
-            <span className="text-[#6C3AED]">study</span>pod<span className="text-[#10B981]">.ai</span>
+            <span className="text-[#7B5CFF]">study</span>pod<span className="text-[#00E896]">.ai</span>
           </Link>
-          <Link href="/" className="text-sm text-[#94A3B8] hover:text-white transition-colors">
+          <Link href="/" className="text-sm text-[#6B7A99] hover:text-white transition-pixel">
             Home
           </Link>
         </div>
@@ -184,13 +184,13 @@ function NewDeckPage() {
                   value={topic}
                   onChange={(e) => setTopic(e.target.value)}
                   placeholder="Enter a study topic..."
-                  className="w-full bg-[#1E293B] border border-[#334155] rounded-2xl px-6 py-4 pr-32 text-lg text-white placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#6C3AED]"
+                  className="w-full bg-[#151A2B] border border-[#2A3352] pixel-border px-6 py-4 pr-32 text-lg text-white placeholder:text-[#6B7A99] focus:outline-none focus:ring-2 focus:ring-[#7B5CFF]"
                   autoFocus
                 />
                 <button
                   type="submit"
                   disabled={!topic.trim()}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 bg-[#6C3AED] hover:bg-[#5B21B6] disabled:opacity-50 text-white rounded-xl px-5 py-2.5 font-semibold transition-colors"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 bg-[#7B5CFF] hover:bg-[#9B7FFF] disabled:opacity-50 text-white pixel-border-sm px-5 py-2.5 font-semibold transition-pixel"
                 >
                   Generate
                 </button>
@@ -203,8 +203,8 @@ function NewDeckPage() {
         {(stage === 'researching' || stage === 'generating') && (
           <div className="text-center py-16">
             <div className="mb-8">
-              <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-[#6C3AED]/10 mb-6">
-                <svg className="w-10 h-10 text-[#6C3AED] animate-spin" fill="none" viewBox="0 0 24 24">
+              <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-[#7B5CFF]/10 mb-6">
+                <svg className="w-10 h-10 text-[#7B5CFF] animate-spin" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                 </svg>
@@ -212,23 +212,23 @@ function NewDeckPage() {
               <h2 className="text-2xl font-bold mb-2">
                 {stage === 'researching' ? 'Researching your topic...' : 'Generating flashcards...'}
               </h2>
-              <p className="text-[#94A3B8] mb-1">
+              <p className="text-[#6B7A99] mb-1">
                 <span className="font-medium text-white">{topic}</span>
               </p>
-              <p className="text-sm text-[#94A3B8]">
+              <p className="text-sm text-[#6B7A99]">
                 {stage === 'researching'
                   ? 'Our AI is deep-diving into the topic and extracting key concepts.'
                   : 'Structuring Q&A pairs and writing dialogue scripts.'}
               </p>
             </div>
             <div className="max-w-md mx-auto">
-              <div className="h-2 bg-[#334155] rounded-full overflow-hidden">
+              <div className="h-2 bg-[#2A3352] rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-[#6C3AED] rounded-full transition-all duration-500"
+                  className="h-full bg-[#7B5CFF] rounded-full transition-all duration-500"
                   style={{ width: `${progress}%` }}
                 />
               </div>
-              <p className="text-xs text-[#94A3B8] mt-2">{Math.round(progress)}%</p>
+              <p className="text-xs text-[#6B7A99] mt-2">{Math.round(progress)}%</p>
             </div>
           </div>
         )}
@@ -236,21 +236,21 @@ function NewDeckPage() {
         {/* Error stage */}
         {stage === 'error' && (
           <div className="text-center py-16">
-            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-[#FB7185]/10 mb-6">
+            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-[#FF6B8A]/10 mb-6">
               <span className="text-4xl">!</span>
             </div>
             <h2 className="text-2xl font-bold mb-2">Something went wrong</h2>
-            <p className="text-[#FB7185] mb-6">{error}</p>
+            <p className="text-[#FF6B8A] mb-6">{error}</p>
             <div className="flex gap-3 justify-center">
               <button
                 onClick={() => startResearch(topic)}
-                className="bg-[#6C3AED] hover:bg-[#5B21B6] text-white rounded-xl px-6 py-3 font-semibold transition-colors"
+                className="bg-[#7B5CFF] hover:bg-[#9B7FFF] text-white pixel-border-sm px-6 py-3 font-semibold transition-pixel"
               >
                 Try again
               </button>
               <button
                 onClick={() => { setStage('input'); setError(''); }}
-                className="bg-[#1E293B] hover:bg-[#334155] border border-[#334155] text-white rounded-xl px-6 py-3 font-semibold transition-colors"
+                className="bg-[#151A2B] hover:bg-[#2A3352] border border-[#2A3352] text-white pixel-border-sm px-6 py-3 font-semibold transition-pixel"
               >
                 Change topic
               </button>
@@ -263,16 +263,16 @@ function NewDeckPage() {
           <div>
             <div className="mb-8">
               <h1 className="text-3xl font-bold mb-2">{topic}</h1>
-              {summary && <p className="text-[#94A3B8] mb-4">{summary}</p>}
+              {summary && <p className="text-[#6B7A99] mb-4">{summary}</p>}
 
               {/* Audio rendering status banner */}
               {renderingCount > 0 && (
-                <div className="flex items-center gap-3 bg-[#6C3AED]/10 border border-[#6C3AED]/30 rounded-xl px-4 py-3 mb-4">
-                  <svg className="w-5 h-5 text-[#6C3AED] animate-spin shrink-0" fill="none" viewBox="0 0 24 24">
+                <div className="flex items-center gap-3 bg-[#7B5CFF]/10 border border-[#7B5CFF]/30 pixel-border-sm px-4 py-3 mb-4">
+                  <svg className="w-5 h-5 text-[#7B5CFF] animate-spin shrink-0" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                   </svg>
-                  <span className="text-sm text-[#6C3AED]">
+                  <span className="text-sm text-[#7B5CFF]">
                     Rendering audio ({renderingCount} card{renderingCount > 1 ? 's' : ''})... Dialogue + TTS + FFmpeg
                   </span>
                 </div>
@@ -281,7 +281,7 @@ function NewDeckPage() {
               <div className="flex flex-wrap gap-3">
                 <Link
                   href={`/study/${deckId}`}
-                  className="bg-[#6C3AED] hover:bg-[#5B21B6] text-white rounded-xl px-6 py-3 font-semibold transition-colors"
+                  className="bg-[#7B5CFF] hover:bg-[#9B7FFF] text-white pixel-border-sm px-6 py-3 font-semibold transition-pixel"
                 >
                   Start studying ({cards.length} cards)
                 </Link>
@@ -299,7 +299,7 @@ function NewDeckPage() {
                     document.body.removeChild(a);
                     URL.revokeObjectURL(url);
                   }}
-                  className="flex items-center gap-2 bg-[#10B981] hover:bg-[#059669] text-white rounded-xl px-5 py-3 font-semibold transition-colors"
+                  className="flex items-center gap-2 bg-[#00E896] hover:bg-[#33FFAA] text-white pixel-border-sm px-5 py-3 font-semibold transition-pixel"
                 >
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -322,22 +322,22 @@ function NewDeckPage() {
                 const audio = audioStates[cardId];
 
                 return (
-                  <div key={i} className="bg-[#1E293B] border border-[#334155] rounded-2xl p-5 hover:border-[#6C3AED]/30 transition-colors">
+                  <div key={i} className="bg-[#151A2B] border border-[#2A3352] pixel-border p-5 hover:border-[#7B5CFF]/30 transition-pixel">
                     <div className="flex items-center gap-2 mb-2">
-                      <span className="text-xs text-[#94A3B8]">#{i + 1}</span>
+                      <span className="text-xs text-[#6B7A99]">#{i + 1}</span>
                       <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${difficultyColor(card.difficulty)}`}>
                         {difficultyLabel(card.difficulty)}
                       </span>
                       {audio?.status === 'done' && audio.durationSeconds && (
-                        <span className="text-xs text-[#10B981]">
+                        <span className="text-xs text-[#00E896]">
                           {Math.floor(audio.durationSeconds / 60)}:{String(audio.durationSeconds % 60).padStart(2, '0')}
                         </span>
                       )}
                     </div>
                     <p className="font-medium mb-1">{card.front}</p>
-                    <p className="text-sm text-[#94A3B8]">{card.back}</p>
+                    <p className="text-sm text-[#6B7A99]">{card.back}</p>
                     {card.explanation && (
-                      <p className="text-xs text-[#94A3B8]/70 mt-2 border-t border-[#334155] pt-2">{card.explanation}</p>
+                      <p className="text-xs text-[#6B7A99]/70 mt-2 border-t border-[#2A3352] pt-2">{card.explanation}</p>
                     )}
 
                     {/* Audio section */}
@@ -352,7 +352,7 @@ function NewDeckPage() {
                       )}
 
                       {audio?.status === 'rendering' && (
-                        <div className="flex items-center gap-2 text-sm text-[#6C3AED] bg-[#6C3AED]/10 rounded-xl px-4 py-2.5">
+                        <div className="flex items-center gap-2 text-sm text-[#7B5CFF] bg-[#7B5CFF]/10 pixel-border-sm px-4 py-2.5">
                           <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
                             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
@@ -362,11 +362,11 @@ function NewDeckPage() {
                       )}
 
                       {audio?.status === 'error' && (
-                        <div className="flex items-center justify-between text-sm bg-[#FB7185]/10 rounded-xl px-4 py-2.5">
-                          <span className="text-[#FB7185]">Audio failed: {audio.error}</span>
+                        <div className="flex items-center justify-between text-sm bg-[#FF6B8A]/10 pixel-border-sm px-4 py-2.5">
+                          <span className="text-[#FF6B8A]">Audio failed: {audio.error}</span>
                           <button
                             onClick={() => renderAudioForCard(card, cardId)}
-                            className="text-[#FB7185] hover:text-white font-medium ml-2"
+                            className="text-[#FF6B8A] hover:text-white font-medium ml-2"
                           >
                             Retry
                           </button>
@@ -376,7 +376,7 @@ function NewDeckPage() {
                       {!audio && (
                         <button
                           onClick={() => renderAudioForCard(card, cardId)}
-                          className="flex items-center gap-2 text-sm text-[#94A3B8] hover:text-[#6C3AED] bg-[#334155]/50 hover:bg-[#6C3AED]/10 rounded-xl px-4 py-2.5 transition-colors w-full"
+                          className="flex items-center gap-2 text-sm text-[#6B7A99] hover:text-[#7B5CFF] bg-[#2A3352]/50 hover:bg-[#7B5CFF]/10 pixel-border-sm px-4 py-2.5 transition-pixel w-full"
                         >
                           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072M12 6v12m0 0l-3-3m3 3l3-3" />

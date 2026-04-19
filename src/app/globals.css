@@ -1,21 +1,138 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-background: #0F172A;
-  --color-foreground: #F8FAFC;
-  --color-primary: #6C3AED;
-  --color-primary-hover: #5B21B6;
-  --color-accent: #10B981;
-  --color-accent-hover: #059669;
-  --color-danger: #FB7185;
-  --color-surface: #1E293B;
-  --color-surface-hover: #334155;
-  --color-muted: #94A3B8;
-  --color-border: #334155;
+  /* === PIXEL PALETTE — Inspired by Game Boy Color === */
+  --color-background: #0B0E17;
+  --color-foreground: #E8F0E8;
+  --color-primary: #7B5CFF;
+  --color-primary-hover: #9B7FFF;
+  --color-accent: #00E896;
+  --color-accent-hover: #33FFAA;
+  --color-danger: #FF6B8A;
+  --color-xp: #FFD93D;
+  --color-surface: #151A2B;
+  --color-surface-hover: #1E2540;
+  --color-muted: #6B7A99;
+  --color-border: #2A3352;
   --font-sans: var(--font-inter);
+  --font-pixel: var(--font-press-start);
 }
 
 body {
   background: var(--color-background);
   color: var(--color-foreground);
+  image-rendering: pixelated;
+}
+
+/* === PIXEL BORDERS — 8-bit stepped corners === */
+.pixel-border {
+  clip-path: polygon(
+    0px 8px, 4px 8px, 4px 4px, 8px 4px, 8px 0px,
+    calc(100% - 8px) 0px, calc(100% - 8px) 4px, calc(100% - 4px) 4px, calc(100% - 4px) 8px, 100% 8px,
+    100% calc(100% - 8px), calc(100% - 4px) calc(100% - 8px), calc(100% - 4px) calc(100% - 4px), calc(100% - 8px) calc(100% - 4px), calc(100% - 8px) 100%,
+    8px 100%, 8px calc(100% - 4px), 4px calc(100% - 4px), 4px calc(100% - 8px), 0px calc(100% - 8px)
+  );
+}
+
+/* Simpler pixel border for small elements */
+.pixel-border-sm {
+  clip-path: polygon(
+    0px 4px, 4px 4px, 4px 0px,
+    calc(100% - 4px) 0px, calc(100% - 4px) 4px, 100% 4px,
+    100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%,
+    4px 100%, 4px calc(100% - 4px), 0px calc(100% - 4px)
+  );
+}
+
+/* === SCANLINES — subtle CRT effect === */
+.scanlines {
+  position: relative;
+}
+.scanlines::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.08) 2px,
+    rgba(0, 0, 0, 0.08) 4px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* === PIXEL PROGRESS BAR === */
+.pixel-progress {
+  background: var(--color-border);
+  height: 16px;
+  position: relative;
+}
+.pixel-progress::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 6px,
+    rgba(0, 0, 0, 0.15) 6px,
+    rgba(0, 0, 0, 0.15) 8px
+  );
+  pointer-events: none;
+}
+.pixel-progress-fill {
+  height: 100%;
+  transition: width 0.3s steps(20);
+  position: relative;
+}
+
+/* === BLINK CURSOR — retro terminal === */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.cursor-blink::after {
+  content: '\2588';
+  animation: blink 1s steps(1) infinite;
+  color: var(--color-accent);
+}
+
+/* === PIXEL TEXT SHADOW — gives depth to pixel font headers === */
+.pixel-shadow {
+  text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.5);
+}
+
+/* === GLITCH HOVER — subtle on interactive elements === */
+@keyframes glitch-sm {
+  0%, 100% { transform: translate(0); }
+  20% { transform: translate(-1px, 1px); }
+  40% { transform: translate(1px, -1px); }
+  60% { transform: translate(-1px, -1px); }
+  80% { transform: translate(1px, 1px); }
+}
+.hover-glitch:hover {
+  animation: glitch-sm 0.3s steps(4) 1;
+}
+
+/* === TYPE ANIMATION — for hero text === */
+@keyframes typewriter {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+/* === DISABLE smooth transitions globally === */
+* {
+  transition-property: none;
+}
+/* Re-enable only where intentional */
+.transition-pixel {
+  transition: background-color 0.1s steps(1), color 0.1s steps(1), opacity 0.1s steps(1);
+}
+
+/* Card flip (keep smooth for this one interaction) */
+.flip-transition {
+  transition: transform 0.5s ease;
+  transform-style: preserve-3d;
 }

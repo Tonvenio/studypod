@@ -63,33 +63,33 @@ export default function AudioMiniPlayer({ src, title }: AudioMiniPlayerProps) {
   };
 
   return (
-    <div className="flex items-center gap-3 bg-[#1E293B] border border-[#334155] rounded-xl px-4 py-2.5">
+    <div className="flex items-center gap-3 pixel-border bg-[#151A2B] px-4 py-2.5">
       <audio ref={audioRef} src={src} preload="metadata" />
 
       <button
         onClick={togglePlay}
-        className="w-8 h-8 flex items-center justify-center bg-[#6C3AED] hover:bg-[#5B21B6] rounded-lg text-white text-sm transition-colors shrink-0"
+        className="w-8 h-8 flex items-center justify-center pixel-border-sm bg-[#7B5CFF] hover:bg-[#9B7FFF] text-white text-sm transition-pixel shrink-0"
       >
         {isPlaying ? '||' : '\u25B6'}
       </button>
 
       <div className="flex-1 min-w-0">
-        {title && <p className="text-xs text-[#94A3B8] truncate mb-1">{title}</p>}
+        {title && <p className="text-[10px] text-[#6B7A99] truncate mb-1 font-mono">{title}</p>}
         <div className="flex items-center gap-2">
-          <span className="text-xs text-[#94A3B8] w-10 shrink-0">{formatTime(progress)}</span>
-          <div className="flex-1 h-1.5 bg-[#334155] rounded-full cursor-pointer" onClick={seek}>
+          <span className="font-[family-name:var(--font-press-start)] text-[8px] text-[#6B7A99] w-10 shrink-0">{formatTime(progress)}</span>
+          <div className="flex-1 pixel-progress pixel-border-sm cursor-pointer" style={{ height: '10px' }} onClick={seek}>
             <div
-              className="h-full bg-[#6C3AED] rounded-full transition-all"
-              style={{ width: duration ? `${(progress / duration) * 100}%` : '0%' }}
+              className="pixel-progress-fill bg-[#7B5CFF]"
+              style={{ width: duration ? `${(progress / duration) * 100}%` : '0%', height: '100%' }}
             />
           </div>
-          <span className="text-xs text-[#94A3B8] w-10 shrink-0 text-right">{formatTime(duration)}</span>
+          <span className="font-[family-name:var(--font-press-start)] text-[8px] text-[#6B7A99] w-10 shrink-0 text-right">{formatTime(duration)}</span>
         </div>
       </div>
 
       <button
         onClick={cycleSpeed}
-        className="text-xs text-[#94A3B8] hover:text-white bg-[#334155] rounded-lg px-2 py-1 font-mono transition-colors shrink-0"
+        className="font-[family-name:var(--font-press-start)] text-[8px] text-[#6B7A99] hover:text-[#E8F0E8] pixel-border-sm bg-[#2A3352] px-2 py-1 transition-pixel shrink-0"
       >
         {playbackRate}x
       </button>

@@ -26,7 +26,6 @@ export default function FlashcardPlayer({
 
   const flip = useCallback(() => setIsFlipped((f) => !f), []);
 
-  // Reset flip state when card changes
   const prevFront = useRef(front);
   if (prevFront.current !== front) {
     prevFront.current = front;
@@ -57,16 +56,20 @@ export default function FlashcardPlayer({
 
   return (
     <div className="w-full max-w-xl mx-auto">
-      {/* Progress */}
-      <div className="flex items-center justify-between mb-4 text-sm text-[#94A3B8]">
-        <span>{cardNumber} / {totalCards}</span>
-        <div className="flex-1 mx-4 h-1.5 bg-[#334155] rounded-full overflow-hidden">
+      {/* Pixel Progress Bar */}
+      <div className="flex items-center justify-between mb-4">
+        <span className="font-[family-name:var(--font-press-start)] text-[8px] text-[#6B7A99]">
+          {cardNumber}/{totalCards}
+        </span>
+        <div className="flex-1 mx-4 pixel-progress pixel-border-sm overflow-hidden">
           <div
-            className="h-full bg-[#6C3AED] rounded-full transition-all duration-300"
+            className="pixel-progress-fill bg-[#7B5CFF]"
             style={{ width: `${(cardNumber / totalCards) * 100}%` }}
           />
         </div>
-        <span>{Math.round((cardNumber / totalCards) * 100)}%</span>
+        <span className="font-[family-name:var(--font-press-start)] text-[8px] text-[#00E896]">
+          {Math.round((cardNumber / totalCards) * 100)}%
+        </span>
       </div>
 
       {/* Card */}
@@ -76,69 +79,68 @@ export default function FlashcardPlayer({
         onClick={flip}
       >
         <div
-          className="absolute inset-0 transition-transform duration-500"
+          className="absolute inset-0 flip-transition"
           style={{
-            transformStyle: 'preserve-3d',
             transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
           }}
         >
           {/* Front */}
           <div
-            className="absolute inset-0 bg-[#1E293B] border border-[#334155] rounded-2xl p-8 flex flex-col items-center justify-center text-center"
+            className="absolute inset-0 pixel-border bg-[#151A2B] border-2 border-[#2A3352] p-8 flex flex-col items-center justify-center text-center"
             style={{ backfaceVisibility: 'hidden' }}
           >
-            <span className="text-xs text-[#6C3AED] font-semibold uppercase tracking-wider mb-4">Question</span>
+            <span className="font-[family-name:var(--font-press-start)] text-[8px] text-[#7B5CFF] uppercase tracking-wider mb-4">QUESTION</span>
             <p className="text-xl md:text-2xl font-semibold leading-relaxed">{front}</p>
-            <p className="text-sm text-[#94A3B8] mt-6">Tap to reveal answer</p>
+            <p className="font-[family-name:var(--font-press-start)] text-[8px] text-[#6B7A99] mt-6">PRESS SPACE TO REVEAL</p>
           </div>
 
           {/* Back */}
           <div
-            className="absolute inset-0 bg-[#1E293B] border border-[#6C3AED]/30 rounded-2xl p-8 flex flex-col items-center justify-center text-center overflow-y-auto"
+            className="absolute inset-0 pixel-border bg-[#151A2B] border-2 border-[#7B5CFF]/40 p-8 flex flex-col items-center justify-center text-center overflow-y-auto"
             style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
           >
-            <span className="text-xs text-[#10B981] font-semibold uppercase tracking-wider mb-4">Answer</span>
+            <span className="font-[family-name:var(--font-press-start)] text-[8px] text-[#00E896] uppercase tracking-wider mb-4">ANSWER</span>
             <p className="text-lg md:text-xl font-medium leading-relaxed mb-4">{back}</p>
             {explanation && (
-              <p className="text-sm text-[#94A3B8] leading-relaxed border-t border-[#334155] pt-4 mt-2">
+              <p className="text-sm text-[#6B7A99] leading-relaxed border-t-2 border-[#2A3352] pt-4 mt-2">
                 {explanation}
               </p>
             )}
             {audioUrl && (
               <button
                 onClick={(e) => { e.stopPropagation(); playAudio(); }}
-                className="mt-4 flex items-center gap-2 bg-[#6C3AED]/10 hover:bg-[#6C3AED]/20 text-[#6C3AED] rounded-xl px-4 py-2 text-sm font-medium transition-colors"
+                className="mt-4 flex items-center gap-2 pixel-border-sm bg-[#7B5CFF]/10 hover:bg-[#7B5CFF]/20 text-[#7B5CFF] px-4 py-2 text-sm font-medium transition-pixel"
               >
-                {isPlaying ? 'Playing...' : 'Listen'}
+                {isPlaying ? '▶ PLAYING...' : '▶ LISTEN'}
               </button>
             )}
           </div>
         </div>
       </div>
 
-      {/* Rating buttons */}
+      {/* Rating buttons — game controller style */}
       {isFlipped && onRate && (
         <div className="grid grid-cols-4 gap-2 mt-6">
           {[
-            { key: 'again' as const, label: 'Again', color: 'bg-[#FB7185]', hint: '1' },
-            { key: 'hard' as const, label: 'Hard', color: 'bg-[#F59E0B]', hint: '2' },
-            { key: 'good' as const, label: 'Good', color: 'bg-[#6C3AED]', hint: '3' },
-            { key: 'easy' as const, label: 'Easy', color: 'bg-[#10B981]', hint: '4' },
+            { key: 'again' as const, label: 'AGAIN', color: 'bg-[#FF6B8A]', hint: '1' },
+            { key: 'hard' as const, label: 'HARD', color: 'bg-[#FFD93D] text-[#0B0E17]', hint: '2' },
+            { key: 'good' as const, label: 'GOOD', color: 'bg-[#7B5CFF]', hint: '3' },
+            { key: 'easy' as const, label: 'EASY', color: 'bg-[#00E896] text-[#0B0E17]', hint: '4' },
           ].map((btn) => (
             <button
               key={btn.key}
               onClick={() => onRate(btn.key)}
-              className={`${btn.color} hover:opacity-90 text-white rounded-xl py-3 text-sm font-semibold transition-opacity`}
+              className={`${btn.color} pixel-border-sm py-3 text-sm font-bold hover:opacity-90 transition-pixel`}
             >
               {btn.label}
-              <span className="block text-xs opacity-60 mt-0.5">{btn.hint}</span>
+              <span className="block font-[family-name:var(--font-press-start)] text-[8px] opacity-60 mt-0.5">{btn.hint}</span>
             </button>
           ))}
         </div>
       )}
 
-      <p className="text-xs text-[#94A3B8] text-center mt-3">
-        Space to flip · 1-4 to rate
+      <p className="font-[family-name:var(--font-press-start)] text-[8px] text-[#6B7A99] text-center mt-3">
+        SPACE = FLIP · 1-4 = RATE
       </p>
     </div>
   );

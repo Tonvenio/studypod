@@ -1,9 +1,16 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Press_Start_2P } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
   variable: "--font-inter",
+  subsets: ["latin"],
+});
+
+const pressStart = Press_Start_2P({
+  variable: "--font-press-start",
+  weight: "400",
   subsets: ["latin"],
 });
 
@@ -19,8 +26,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} dark`}>
-      <body className="min-h-screen bg-background text-foreground font-sans antialiased">
+    <html lang="en" className={`${inter.variable} ${pressStart.variable} dark`}>
+      <body className="min-h-screen bg-[#0B0E17] text-[#E8F0E8] font-sans antialiased">
         {children}
       </body>
     </html>

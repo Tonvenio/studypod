@@ -18,9 +18,9 @@ export default function DeckPage() {
   const deck = MOCK_DECK;
 
   const difficultyColor = (d: number) => {
-    if (d <= 2) return 'bg-[#10B981]/20 text-[#10B981]';
-    if (d <= 3) return 'bg-[#F59E0B]/20 text-[#F59E0B]';
-    return 'bg-[#FB7185]/20 text-[#FB7185]';
+    if (d <= 2) return 'bg-[#00E896]/20 text-[#00E896]';
+    if (d <= 3) return 'bg-[#FFD93D]/20 text-[#FFD93D]';
+    return 'bg-[#FF6B8A]/20 text-[#FF6B8A]';
   };
 
   const difficultyLabel = (d: number) => {
@@ -28,45 +28,45 @@ export default function DeckPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#0F172A] text-[#F8FAFC]">
-      <nav className="border-b border-[#334155]">
+    <main className="min-h-screen bg-[#0B0E17] text-[#E8F0E8]">
+      <nav className="border-b-2 border-[#2A3352]">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-          <Link href="/" className="text-xl font-bold">
-            <span className="text-[#6C3AED]">study</span>pod<span className="text-[#10B981]">.ai</span>
+          <Link href="/" className="font-[family-name:var(--font-press-start)] text-sm">
+            <span className="text-[#7B5CFF]">study</span><span className="text-[#E8F0E8]">pod</span><span className="text-[#00E896]">.ai</span>
           </Link>
         </div>
       </nav>
 
       <div className="max-w-4xl mx-auto px-4 py-12">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">{deck.topic}</h1>
-          <p className="text-[#94A3B8] mb-6">{deck.description}</p>
+          <h1 className="font-[family-name:var(--font-press-start)] text-2xl mb-2">{deck.topic}</h1>
+          <p className="text-[#6B7A99] mb-6">{deck.description}</p>
 
           <div className="flex flex-wrap gap-3">
             <Link
               href={`/study/${deck.id}`}
-              className="bg-[#6C3AED] hover:bg-[#5B21B6] text-white rounded-xl px-6 py-3 font-semibold transition-colors"
+              className="pixel-border-sm bg-[#7B5CFF] hover:bg-[#9B7FFF] text-white px-6 py-3 font-semibold transition-pixel"
             >
-              Start studying ({deck.cardCount} cards)
+              Begin Quest ({deck.cardCount} cards)
             </Link>
             <AnkiExportButton deckId={deck.id} topic={deck.topic} cardCount={deck.cardCount} />
           </div>
         </div>
 
-        <h2 className="text-xl font-semibold mb-4">Cards in this deck</h2>
+        <h2 className="font-[family-name:var(--font-press-start)] text-sm mb-4">Card Inventory</h2>
         <div className="grid gap-3">
           {deck.cards.map((card, i) => (
-            <div key={card.id} className="bg-[#1E293B] border border-[#334155] rounded-2xl p-5 hover:border-[#6C3AED]/30 transition-colors">
+            <div key={card.id} className="pixel-border bg-[#151A2B] border-2 border-[#2A3352] p-5 hover:border-[#7B5CFF]/30 transition-pixel">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="text-xs text-[#94A3B8]">#{i + 1}</span>
-                    <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${difficultyColor(card.difficulty)}`}>
+                    <span className="text-xs text-[#6B7A99]">#{i + 1}</span>
+                    <span className={`pixel-border-sm text-xs font-medium px-2 py-0.5 ${difficultyColor(card.difficulty)}`}>
                       {difficultyLabel(card.difficulty)}
                     </span>
                   </div>
                   <p className="font-medium mb-1">{card.front}</p>
-                  <p className="text-sm text-[#94A3B8]">{card.back}</p>
+                  <p className="text-sm text-[#6B7A99]">{card.back}</p>
                 </div>
               </div>
             </div>

@@ -1,128 +1,156 @@
 import Link from 'next/link';
 
-const trendingTopics = [
-  'Photosynthesis', 'World War II', 'Python Programming',
-  'Organic Chemistry', 'Macroeconomics', 'Constitutional Law',
-  'Machine Learning', 'Cell Biology', 'Statistics',
+const QUESTS = [
+  { topic: 'Photosynthesis', level: 3, xp: 150 },
+  { topic: 'World War II', level: 5, xp: 280 },
+  { topic: 'Python Programming', level: 4, xp: 220 },
+  { topic: 'Organic Chemistry', level: 6, xp: 340 },
+  { topic: 'Macroeconomics', level: 2, xp: 90 },
+  { topic: 'Constitutional Law', level: 4, xp: 210 },
+  { topic: 'Machine Learning', level: 7, xp: 420 },
+  { topic: 'Cell Biology', level: 3, xp: 170 },
 ];
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen bg-[#0F172A] text-[#F8FAFC]">
+    <main className="min-h-screen bg-[#0B0E17] text-[#E8F0E8]">
       {/* Nav */}
-      <nav className="border-b border-[#334155]">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-          <Link href="/" className="text-xl font-bold">
-            <span className="text-[#6C3AED]">study</span>pod<span className="text-[#10B981]">.ai</span>
+      <nav className="border-b-2 border-[#2A3352]">
+        <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+          <Link href="/" className="font-[family-name:var(--font-press-start)] text-sm">
+            <span className="text-[#7B5CFF]">study</span>
+            <span className="text-[#E8F0E8]">pod</span>
+            <span className="text-[#00E896]">.ai</span>
           </Link>
-          <div className="flex items-center gap-3">
-            <Link href="/dashboard" className="text-sm text-[#94A3B8] hover:text-white transition-colors">
+          <div className="flex items-center gap-4">
+            <Link href="/dashboard" className="text-xs text-[#6B7A99] hover:text-[#E8F0E8] transition-pixel">
               Dashboard
             </Link>
-            <Link href="/auth/login" className="text-sm text-[#94A3B8] hover:text-white transition-colors">
-              Log in
+            <Link href="/guide/mobile-listening" className="text-xs text-[#6B7A99] hover:text-[#E8F0E8] transition-pixel">
+              Mobile
             </Link>
-            <Link href="/auth/register" className="text-sm bg-[#6C3AED] hover:bg-[#5B21B6] text-white rounded-xl px-4 py-2 font-medium transition-colors">
-              Sign up free
+            <Link
+              href="/auth/register"
+              className="pixel-border-sm bg-[#7B5CFF] text-[#E8F0E8] text-xs font-bold px-4 py-2 hover:bg-[#9B7FFF] transition-pixel"
+            >
+              SIGN UP
             </Link>
           </div>
         </div>
       </nav>
 
-      {/* Hero */}
-      <section className="max-w-4xl mx-auto px-4 pt-20 pb-16 text-center">
-        <div className="inline-flex items-center gap-2 bg-[#6C3AED]/10 border border-[#6C3AED]/30 rounded-full px-4 py-1.5 mb-6">
-          <span className="w-2 h-2 bg-[#10B981] rounded-full animate-pulse" />
-          <span className="text-sm text-[#6C3AED]">AI-powered study tool</span>
+      {/* Hero — CRT style */}
+      <section className="scanlines relative overflow-hidden">
+        <div className="max-w-4xl mx-auto px-4 pt-16 pb-20 text-center relative z-10">
+          {/* XP bar decoration */}
+          <div className="flex items-center justify-center gap-2 mb-8">
+            <span className="text-[#FFD93D] font-[family-name:var(--font-press-start)] text-[10px]">NEW QUEST AVAILABLE</span>
+          </div>
+
+          <h1 className="font-[family-name:var(--font-press-start)] text-2xl md:text-3xl leading-relaxed mb-6 pixel-shadow">
+            STUDY SMARTER<br />
+            <span className="text-[#7B5CFF]">WITH AI AUDIO</span><br />
+            <span className="text-[#00E896]">FLASHCARDS</span>
+          </h1>
+
+          <p className="text-[#6B7A99] max-w-lg mx-auto mb-10 text-sm leading-relaxed">
+            Enter any topic. Our AI researches, creates flashcards,
+            generates podcast-style audio, and exports to Anki.
+          </p>
+
+          {/* Search — pixel styled */}
+          <div className="max-w-xl mx-auto mb-4">
+            <form action="/deck/new" className="relative">
+              <div className="pixel-border bg-[#151A2B] p-1">
+                <input
+                  type="text"
+                  name="topic"
+                  placeholder="Enter your study topic..."
+                  className="w-full bg-transparent px-5 py-4 text-[#E8F0E8] placeholder:text-[#6B7A99] focus:outline-none text-lg"
+                  autoFocus
+                />
+              </div>
+              <button
+                type="submit"
+                className="absolute right-3 top-1/2 -translate-y-1/2 pixel-border-sm bg-[#00E896] text-[#0B0E17] font-bold px-5 py-2.5 text-sm hover:bg-[#33FFAA] transition-pixel"
+              >
+                GENERATE
+              </button>
+            </form>
+            <p className="font-[family-name:var(--font-press-start)] text-[8px] text-[#6B7A99] mt-3">
+              FREE &bull; NO ACCOUNT REQUIRED &bull; PRESS ENTER TO START
+            </p>
+          </div>
         </div>
+      </section>
 
-        <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6">
-          Study smarter with{' '}
-          <span className="text-[#6C3AED]">audio flashcards</span>
-        </h1>
+      {/* Quest Board */}
+      <section className="max-w-5xl mx-auto px-4 py-12">
+        <h2 className="font-[family-name:var(--font-press-start)] text-sm text-[#FFD93D] mb-8 pixel-shadow">
+          &#9654; POPULAR QUESTS
+        </h2>
 
-        <p className="text-lg md:text-xl text-[#94A3B8] max-w-2xl mx-auto mb-10">
-          Enter any topic. Our AI researches it, creates flashcards, generates audio lessons, and exports to Anki — in seconds.
-        </p>
-
-        {/* Search Input */}
-        <div className="max-w-xl mx-auto mb-6">
-          <form action="/deck/new" className="relative">
-            <input
-              type="text"
-              name="topic"
-              placeholder="What do you want to study?"
-              className="w-full bg-[#1E293B] border border-[#334155] rounded-2xl px-6 py-4 pr-32 text-lg text-white placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#6C3AED] focus:border-transparent"
-              autoFocus
-            />
-            <button
-              type="submit"
-              className="absolute right-2 top-1/2 -translate-y-1/2 bg-[#6C3AED] hover:bg-[#5B21B6] text-white rounded-xl px-5 py-2.5 font-semibold transition-colors"
-            >
-              Generate
-            </button>
-          </form>
-          <p className="text-xs text-[#94A3B8] mt-2">Free — no account required</p>
-        </div>
-
-        {/* Trending Topics */}
-        <div className="flex flex-wrap justify-center gap-2 mt-8">
-          {trendingTopics.map((topic) => (
+        <div className="grid md:grid-cols-2 gap-3">
+          {QUESTS.map((quest) => (
             <Link
-              key={topic}
-              href={`/deck/new?topic=${encodeURIComponent(topic)}`}
-              className="bg-[#1E293B] hover:bg-[#334155] border border-[#334155] text-sm text-[#94A3B8] hover:text-white rounded-full px-4 py-1.5 transition-colors"
+              key={quest.topic}
+              href={`/deck/new?topic=${encodeURIComponent(quest.topic)}`}
+              className="pixel-border bg-[#151A2B] p-4 hover:bg-[#1E2540] transition-pixel group"
             >
-              {topic}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <span className="font-[family-name:var(--font-press-start)] text-[10px] text-[#FFD93D] bg-[#FFD93D]/10 px-2 py-1">
+                    LV.{quest.level}
+                  </span>
+                  <span className="text-sm font-medium group-hover:text-[#7B5CFF]">{quest.topic}</span>
+                </div>
+                <span className="font-[family-name:var(--font-press-start)] text-[8px] text-[#00E896]">
+                  +{quest.xp}XP
+                </span>
+              </div>
             </Link>
           ))}
         </div>
       </section>
 
-      {/* How it works */}
-      <section className="max-w-5xl mx-auto px-4 py-16">
-        <h2 className="text-2xl font-bold text-center mb-12">How it works</h2>
-        <div className="grid md:grid-cols-3 gap-8">
-          {[
-            { step: '1', title: 'Enter a topic', desc: 'Type any study topic — from quantum physics to art history.', icon: '\uD83D\uDD0D' },
-            { step: '2', title: 'AI creates your deck', desc: 'Our AI researches the topic and generates flashcards with audio explanations.', icon: '\uD83E\uDDE0' },
-            { step: '3', title: 'Study & export', desc: 'Listen, flip cards, track progress. Export to Anki anytime.', icon: '\uD83C\uDFA7' },
-          ].map((item) => (
-            <div key={item.step} className="bg-[#1E293B] border border-[#334155] rounded-2xl p-6 text-center">
-              <div className="text-4xl mb-4">{item.icon}</div>
-              <div className="text-xs text-[#6C3AED] font-semibold uppercase tracking-wider mb-2">
-                Step {item.step}
-              </div>
-              <h3 className="text-lg font-semibold mb-2">{item.title}</h3>
-              <p className="text-sm text-[#94A3B8]">{item.desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* Features — game menu style, NOT 3-column grid */}
+      <section className="border-t-2 border-b-2 border-[#2A3352] py-12">
+        <div className="max-w-3xl mx-auto px-4">
+          <h2 className="font-[family-name:var(--font-press-start)] text-sm text-[#7B5CFF] mb-8 pixel-shadow">
+            &#9654; ABILITIES UNLOCKED
+          </h2>
 
-      {/* Stats */}
-      <section className="border-t border-[#334155] py-12">
-        <div className="max-w-4xl mx-auto px-4 grid grid-cols-3 gap-8 text-center">
-          {[
-            { value: '50K+', label: 'Flashcards created' },
-            { value: '12K+', label: 'Students studying' },
-            { value: '200+', label: 'Topics covered' },
-          ].map((stat) => (
-            <div key={stat.label}>
-              <div className="text-3xl font-bold text-[#6C3AED]">{stat.value}</div>
-              <div className="text-sm text-[#94A3B8] mt-1">{stat.label}</div>
-            </div>
-          ))}
+          <div className="space-y-3">
+            {[
+              { key: 'A', label: 'AI Research', desc: 'Deep-dive any topic with Gemini AI', color: '#7B5CFF' },
+              { key: 'B', label: 'Audio Generation', desc: 'Two-host podcast-style MP3s via hybrid TTS', color: '#00E896' },
+              { key: 'X', label: 'Anki Export', desc: 'Download .apkg decks for spaced repetition', color: '#FFD93D' },
+              { key: 'Y', label: 'Podcast Feed', desc: 'Subscribe in Apple Podcasts or Pocket Casts', color: '#FF6B8A' },
+            ].map((ability) => (
+              <div key={ability.key} className="pixel-border bg-[#151A2B] p-4 flex items-center gap-4">
+                <span
+                  className="font-[family-name:var(--font-press-start)] text-xs w-8 h-8 flex items-center justify-center pixel-border-sm"
+                  style={{ backgroundColor: ability.color, color: '#0B0E17' }}
+                >
+                  {ability.key}
+                </span>
+                <div>
+                  <p className="font-semibold text-sm">{ability.label}</p>
+                  <p className="text-xs text-[#6B7A99]">{ability.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-[#334155] py-8">
-        <div className="max-w-6xl mx-auto px-4 flex items-center justify-between text-sm text-[#94A3B8]">
-          <span>studypod.ai</span>
+      <footer className="border-t-2 border-[#2A3352] py-6">
+        <div className="max-w-5xl mx-auto px-4 flex items-center justify-between text-xs text-[#6B7A99]">
+          <span className="font-[family-name:var(--font-press-start)] text-[8px]">STUDYPOD.AI</span>
           <div className="flex items-center gap-4">
-            <Link href="/guide/mobile-listening" className="hover:text-white transition-colors">Listen on mobile</Link>
-            <span>Built with AI, designed for students</span>
+            <Link href="/guide/mobile-listening" className="hover:text-[#E8F0E8] transition-pixel">Listen on mobile</Link>
+            <span>Built with AI</span>
           </div>
         </div>
       </footer>

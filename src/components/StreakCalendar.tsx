@@ -21,33 +21,33 @@ export default function StreakCalendar({ studyDays, currentStreak, longestStreak
 
   const getIntensity = (date: string): string => {
     const count = studyDays[date] || 0;
-    if (count === 0) return 'bg-[#334155]';
-    if (count < 5) return 'bg-[#6C3AED]/30';
-    if (count < 15) return 'bg-[#6C3AED]/60';
-    return 'bg-[#6C3AED]';
+    if (count === 0) return 'bg-[#2A3352]';
+    if (count < 5) return 'bg-[#7B5CFF]/30';
+    if (count < 15) return 'bg-[#7B5CFF]/60';
+    return 'bg-[#7B5CFF]';
   };
 
   return (
-    <div className="bg-[#1E293B] border border-[#334155] rounded-2xl p-6">
+    <div className="pixel-border bg-[#151A2B] p-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="font-semibold">Study streak</h3>
-        <div className="flex items-center gap-4 text-sm">
-          <span className="text-[#94A3B8]">
-            Current: <span className="text-[#10B981] font-bold">{currentStreak} days</span>
+        <h3 className="font-[family-name:var(--font-press-start)] text-[10px] text-[#FFD93D]">STUDY STREAK</h3>
+        <div className="flex items-center gap-4">
+          <span className="font-[family-name:var(--font-press-start)] text-[8px] text-[#6B7A99]">
+            NOW: <span className="text-[#00E896]">{currentStreak}D</span>
           </span>
-          <span className="text-[#94A3B8]">
-            Best: <span className="text-[#6C3AED] font-bold">{longestStreak} days</span>
+          <span className="font-[family-name:var(--font-press-start)] text-[8px] text-[#6B7A99]">
+            BEST: <span className="text-[#7B5CFF]">{longestStreak}D</span>
           </span>
         </div>
       </div>
 
-      <div className="flex gap-1">
+      <div className="flex gap-[2px]">
         {weeks.map((week, wi) => (
-          <div key={wi} className="flex flex-col gap-1">
+          <div key={wi} className="flex flex-col gap-[2px]">
             {week.map((date) => (
               <div
                 key={date}
-                className={`w-3 h-3 rounded-sm ${getIntensity(date)} transition-colors`}
+                className={`w-3 h-3 ${getIntensity(date)}`}
                 title={`${date}: ${studyDays[date] || 0} cards`}
               />
             ))}
@@ -55,13 +55,13 @@ export default function StreakCalendar({ studyDays, currentStreak, longestStreak
         ))}
       </div>
 
-      <div className="flex items-center gap-1 mt-3 text-xs text-[#94A3B8]">
-        <span>Less</span>
-        <div className="w-3 h-3 rounded-sm bg-[#334155]" />
-        <div className="w-3 h-3 rounded-sm bg-[#6C3AED]/30" />
-        <div className="w-3 h-3 rounded-sm bg-[#6C3AED]/60" />
-        <div className="w-3 h-3 rounded-sm bg-[#6C3AED]" />
-        <span>More</span>
+      <div className="flex items-center gap-[2px] mt-3">
+        <span className="font-[family-name:var(--font-press-start)] text-[6px] text-[#6B7A99] mr-1">LESS</span>
+        <div className="w-3 h-3 bg-[#2A3352]" />
+        <div className="w-3 h-3 bg-[#7B5CFF]/30" />
+        <div className="w-3 h-3 bg-[#7B5CFF]/60" />
+        <div className="w-3 h-3 bg-[#7B5CFF]" />
+        <span className="font-[family-name:var(--font-press-start)] text-[6px] text-[#6B7A99] ml-1">MORE</span>
       </div>
     </div>
   );
