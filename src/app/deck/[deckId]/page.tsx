@@ -18,9 +18,9 @@ export default function DeckPage() {
   const deck = MOCK_DECK;
 
   const difficultyColor = (d: number) => {
-    if (d <= 2) return 'bg-[#00E896]/20 text-[#00E896]';
-    if (d <= 3) return 'bg-[#FFD93D]/20 text-[#FFD93D]';
-    return 'bg-[#FF6B8A]/20 text-[#FF6B8A]';
+    if (d <= 2) return 'bg-[var(--c-accent)]/20 text-[var(--c-accent)]';
+    if (d <= 3) return 'bg-[var(--c-xp)]/20 text-[var(--c-xp)]';
+    return 'bg-[var(--c-danger)]/20 text-[var(--c-danger)]';
   };
 
   const difficultyLabel = (d: number) => {
@@ -28,11 +28,11 @@ export default function DeckPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#0B0E17] text-[#E8F0E8]">
-      <nav className="border-b-2 border-[#2A3352]">
+    <main className="min-h-screen bg-[var(--c-bg)] text-[var(--c-fg)]">
+      <nav className="border-b-2 border-[var(--c-border)]">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="font-[family-name:var(--font-press-start)] text-sm">
-            <span className="text-[#7B5CFF]">study</span><span className="text-[#E8F0E8]">pod</span><span className="text-[#00E896]">.ai</span>
+            <span className="text-[var(--c-primary)]">study</span><span className="text-[var(--c-fg)]">pod</span><span className="text-[var(--c-accent)]">.ai</span>
           </Link>
         </div>
       </nav>
@@ -40,12 +40,12 @@ export default function DeckPage() {
       <div className="max-w-4xl mx-auto px-4 py-12">
         <div className="mb-8">
           <h1 className="font-[family-name:var(--font-press-start)] text-2xl mb-2">{deck.topic}</h1>
-          <p className="text-[#6B7A99] mb-6">{deck.description}</p>
+          <p className="text-[var(--c-muted)] mb-6">{deck.description}</p>
 
           <div className="flex flex-wrap gap-3">
             <Link
               href={`/study/${deck.id}`}
-              className="pixel-border-sm bg-[#7B5CFF] hover:bg-[#9B7FFF] text-white px-6 py-3 font-semibold transition-pixel"
+              className="pixel-border-sm bg-[var(--c-primary)] hover:bg-[var(--c-primary-hover)] text-white px-6 py-3 font-semibold transition-pixel"
             >
               Begin Quest ({deck.cardCount} cards)
             </Link>
@@ -56,17 +56,17 @@ export default function DeckPage() {
         <h2 className="font-[family-name:var(--font-press-start)] text-sm mb-4">Card Inventory</h2>
         <div className="grid gap-3">
           {deck.cards.map((card, i) => (
-            <div key={card.id} className="pixel-border bg-[#151A2B] border-2 border-[#2A3352] p-5 hover:border-[#7B5CFF]/30 transition-pixel">
+            <div key={card.id} className="pixel-border bg-[var(--c-surface)] border-2 border-[var(--c-border)] p-5 hover:border-[#7B5CFF]/30 transition-pixel">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="text-xs text-[#6B7A99]">#{i + 1}</span>
+                    <span className="text-xs text-[var(--c-muted)]">#{i + 1}</span>
                     <span className={`pixel-border-sm text-xs font-medium px-2 py-0.5 ${difficultyColor(card.difficulty)}`}>
                       {difficultyLabel(card.difficulty)}
                     </span>
                   </div>
                   <p className="font-medium mb-1">{card.front}</p>
-                  <p className="text-sm text-[#6B7A99]">{card.back}</p>
+                  <p className="text-sm text-[var(--c-muted)]">{card.back}</p>
                 </div>
               </div>
             </div>

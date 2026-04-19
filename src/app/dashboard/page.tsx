@@ -27,13 +27,13 @@ export default function DashboardPage() {
   const xpInLevel = profile.xpPoints % 100;
 
   return (
-    <main className="min-h-screen bg-[#0B0E17] text-[#E8F0E8]">
-      <nav className="border-b-2 border-[#2A3352]">
+    <main className="min-h-screen bg-[var(--c-bg)] text-[var(--c-fg)]">
+      <nav className="border-b-2 border-[var(--c-border)]">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="font-[family-name:var(--font-press-start)] text-sm">
-            <span className="text-[#7B5CFF]">study</span><span className="text-[#E8F0E8]">pod</span><span className="text-[#00E896]">.ai</span>
+            <span className="text-[var(--c-primary)]">study</span><span className="text-[var(--c-fg)]">pod</span><span className="text-[var(--c-accent)]">.ai</span>
           </Link>
-          <Link href="/" className="text-sm text-[#6B7A99] hover:text-white transition-pixel">
+          <Link href="/" className="text-sm text-[var(--c-muted)] hover:text-white transition-pixel">
             New Quest
           </Link>
         </div>
@@ -44,25 +44,25 @@ export default function DashboardPage() {
 
         {/* Stats Row */}
         <div className="grid grid-cols-3 gap-4 mb-8">
-          <div className="pixel-border bg-[#151A2B] border-2 border-[#2A3352] p-5 text-center">
-            <div className="font-[family-name:var(--font-press-start)] text-xs text-[#6B7A99] mb-2">LEVEL</div>
-            <div className="font-[family-name:var(--font-press-start)] text-3xl text-[#7B5CFF] mb-2">{level}</div>
+          <div className="pixel-border bg-[var(--c-surface)] border-2 border-[var(--c-border)] p-5 text-center">
+            <div className="font-[family-name:var(--font-press-start)] text-xs text-[var(--c-muted)] mb-2">LEVEL</div>
+            <div className="font-[family-name:var(--font-press-start)] text-3xl text-[var(--c-primary)] mb-2">{level}</div>
             <div className="mt-2">
-              <div className="h-3 bg-[#2A3352] pixel-border-sm overflow-hidden">
-                <div className="h-full bg-[#7B5CFF]" style={{ width: `${xpInLevel}%` }} />
+              <div className="h-3 bg-[var(--c-border)] pixel-border-sm overflow-hidden">
+                <div className="h-full bg-[var(--c-primary)]" style={{ width: `${xpInLevel}%` }} />
               </div>
-              <p className="text-xs text-[#6B7A99] mt-1">{xpInLevel}/100 XP</p>
+              <p className="text-xs text-[var(--c-muted)] mt-1">{xpInLevel}/100 XP</p>
             </div>
           </div>
-          <div className="pixel-border bg-[#151A2B] border-2 border-[#2A3352] p-5 text-center">
-            <div className="font-[family-name:var(--font-press-start)] text-xs text-[#6B7A99] mb-2">STREAK</div>
-            <div className="font-[family-name:var(--font-press-start)] text-3xl text-[#00E896]">{profile.currentStreak}</div>
-            <p className="text-sm text-[#6B7A99] mt-1">day combo</p>
+          <div className="pixel-border bg-[var(--c-surface)] border-2 border-[var(--c-border)] p-5 text-center">
+            <div className="font-[family-name:var(--font-press-start)] text-xs text-[var(--c-muted)] mb-2">STREAK</div>
+            <div className="font-[family-name:var(--font-press-start)] text-3xl text-[var(--c-accent)]">{profile.currentStreak}</div>
+            <p className="text-sm text-[var(--c-muted)] mt-1">day combo</p>
           </div>
-          <div className="pixel-border bg-[#151A2B] border-2 border-[#2A3352] p-5 text-center">
-            <div className="font-[family-name:var(--font-press-start)] text-xs text-[#6B7A99] mb-2">TOTAL XP</div>
-            <div className="font-[family-name:var(--font-press-start)] text-3xl text-[#FFD93D]">{profile.xpPoints}</div>
-            <p className="text-sm text-[#6B7A99] mt-1">earned</p>
+          <div className="pixel-border bg-[var(--c-surface)] border-2 border-[var(--c-border)] p-5 text-center">
+            <div className="font-[family-name:var(--font-press-start)] text-xs text-[var(--c-muted)] mb-2">TOTAL XP</div>
+            <div className="font-[family-name:var(--font-press-start)] text-3xl text-[var(--c-xp)]">{profile.xpPoints}</div>
+            <p className="text-sm text-[var(--c-muted)] mt-1">earned</p>
           </div>
         </div>
 
@@ -82,13 +82,13 @@ export default function DashboardPage() {
             <Link
               key={deck.id}
               href={`/deck/${deck.id}`}
-              className="pixel-border bg-[#151A2B] border-2 border-[#2A3352] p-5 hover:border-[#7B5CFF]/30 transition-pixel flex items-center justify-between"
+              className="pixel-border bg-[var(--c-surface)] border-2 border-[var(--c-border)] p-5 hover:border-[#7B5CFF]/30 transition-pixel flex items-center justify-between"
             >
               <div>
                 <p className="font-semibold">{deck.topic}</p>
-                <p className="text-sm text-[#6B7A99]">{deck.cardCount} cards · {deck.lastStudied}</p>
+                <p className="text-sm text-[var(--c-muted)]">{deck.cardCount} cards · {deck.lastStudied}</p>
               </div>
-              <span className="pixel-border-sm bg-[#7B5CFF] hover:bg-[#9B7FFF] text-white px-4 py-2 text-sm font-semibold transition-pixel">
+              <span className="pixel-border-sm bg-[var(--c-primary)] hover:bg-[var(--c-primary-hover)] text-white px-4 py-2 text-sm font-semibold transition-pixel">
                 Resume
               </span>
             </Link>

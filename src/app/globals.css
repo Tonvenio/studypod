@@ -1,26 +1,50 @@
 @import "tailwindcss";
 
 @theme inline {
-  /* === PIXEL PALETTE — Inspired by Game Boy Color === */
-  --color-background: #0B0E17;
-  --color-foreground: #E8F0E8;
-  --color-primary: #7B5CFF;
-  --color-primary-hover: #9B7FFF;
-  --color-accent: #00E896;
-  --color-accent-hover: #33FFAA;
-  --color-danger: #FF6B8A;
-  --color-xp: #FFD93D;
-  --color-surface: #151A2B;
-  --color-surface-hover: #1E2540;
-  --color-muted: #6B7A99;
-  --color-border: #2A3352;
   --font-sans: var(--font-inter);
   --font-pixel: var(--font-press-start);
 }
 
+/* === DARK THEME (default) === */
+:root,
+[data-theme="dark"] {
+  --c-bg: #0B0E17;
+  --c-fg: #E8F0E8;
+  --c-primary: #7B5CFF;
+  --c-primary-hover: #9B7FFF;
+  --c-accent: #00E896;
+  --c-accent-hover: #33FFAA;
+  --c-danger: #FF6B8A;
+  --c-xp: #FFD93D;
+  --c-surface: #151A2B;
+  --c-surface-hover: #1E2540;
+  --c-muted: #6B7A99;
+  --c-border: #2A3352;
+  --c-scanline: rgba(0, 0, 0, 0.08);
+  --c-pixel-shadow: rgba(0, 0, 0, 0.5);
+}
+
+/* === LIGHT THEME — Pixel "Game Boy" inspired === */
+[data-theme="light"] {
+  --c-bg: #E8E4D8;
+  --c-fg: #1A1A2E;
+  --c-primary: #5B3CC4;
+  --c-primary-hover: #7B5CFF;
+  --c-accent: #00A86B;
+  --c-accent-hover: #00C878;
+  --c-danger: #D94466;
+  --c-xp: #CC9B00;
+  --c-surface: #F5F1E6;
+  --c-surface-hover: #EDE8D8;
+  --c-muted: #7A7A8E;
+  --c-border: #C8C4B4;
+  --c-scanline: rgba(0, 0, 0, 0.03);
+  --c-pixel-shadow: rgba(0, 0, 0, 0.15);
+}
+
 body {
-  background: var(--color-background);
-  color: var(--color-foreground);
+  background: var(--c-bg);
+  color: var(--c-fg);
   image-rendering: pixelated;
 }
 
@@ -34,7 +58,6 @@ body {
   );
 }
 
-/* Simpler pixel border for small elements */
 .pixel-border-sm {
   clip-path: polygon(
     0px 4px, 4px 4px, 4px 0px,
@@ -56,8 +79,8 @@ body {
     0deg,
     transparent,
     transparent 2px,
-    rgba(0, 0, 0, 0.08) 2px,
-    rgba(0, 0, 0, 0.08) 4px
+    var(--c-scanline) 2px,
+    var(--c-scanline) 4px
   );
   pointer-events: none;
   z-index: 1;
@@ -65,7 +88,7 @@ body {
 
 /* === PIXEL PROGRESS BAR === */
 .pixel-progress {
-  background: var(--color-border);
+  background: var(--c-border);
   height: 16px;
   position: relative;
 }
@@ -96,15 +119,15 @@ body {
 .cursor-blink::after {
   content: '\2588';
   animation: blink 1s steps(1) infinite;
-  color: var(--color-accent);
+  color: var(--c-accent);
 }
 
-/* === PIXEL TEXT SHADOW — gives depth to pixel font headers === */
+/* === PIXEL TEXT SHADOW === */
 .pixel-shadow {
-  text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.5);
+  text-shadow: 3px 3px 0px var(--c-pixel-shadow);
 }
 
-/* === GLITCH HOVER — subtle on interactive elements === */
+/* === GLITCH HOVER === */
 @keyframes glitch-sm {
   0%, 100% { transform: translate(0); }
   20% { transform: translate(-1px, 1px); }
@@ -116,22 +139,15 @@ body {
   animation: glitch-sm 0.3s steps(4) 1;
 }
 
-/* === TYPE ANIMATION — for hero text === */
-@keyframes typewriter {
-  from { width: 0; }
-  to { width: 100%; }
-}
-
 /* === DISABLE smooth transitions globally === */
 * {
   transition-property: none;
 }
-/* Re-enable only where intentional */
 .transition-pixel {
   transition: background-color 0.1s steps(1), color 0.1s steps(1), opacity 0.1s steps(1);
 }
 
-/* Card flip (keep smooth for this one interaction) */
+/* Card flip */
 .flip-transition {
   transition: transform 0.5s ease;
   transform-style: preserve-3d;

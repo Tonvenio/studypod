@@ -33,25 +33,25 @@ export default function StudyPage() {
   if (isComplete) {
     const correct = Object.values(ratings).filter((r) => r === 'good' || r === 'easy').length;
     return (
-      <main className="min-h-screen bg-[#0B0E17] text-[#E8F0E8] flex items-center justify-center">
+      <main className="min-h-screen bg-[var(--c-bg)] text-[var(--c-fg)] flex items-center justify-center">
         <div className="text-center max-w-md mx-auto px-4">
           <div className="text-6xl mb-4">&#9876;&#65039;</div>
-          <h1 className="font-[family-name:var(--font-press-start)] text-2xl mb-2 text-[#FFD93D]">QUEST COMPLETE!</h1>
-          <p className="text-[#6B7A99] mb-2">
+          <h1 className="font-[family-name:var(--font-press-start)] text-2xl mb-2 text-[var(--c-xp)]">QUEST COMPLETE!</h1>
+          <p className="text-[var(--c-muted)] mb-2">
             You studied {cards.length} cards
           </p>
-          <div className="pixel-border bg-[#151A2B] p-4 mb-6 inline-block">
-            <span className="font-[family-name:var(--font-press-start)] text-lg text-[#00E896]">{correct}/{cards.length}</span>
-            <span className="text-[#6B7A99] ml-2 text-sm">cards mastered</span>
+          <div className="pixel-border bg-[var(--c-surface)] p-4 mb-6 inline-block">
+            <span className="font-[family-name:var(--font-press-start)] text-lg text-[var(--c-accent)]">{correct}/{cards.length}</span>
+            <span className="text-[var(--c-muted)] ml-2 text-sm">cards mastered</span>
           </div>
           <div className="flex gap-3 justify-center">
             <button
               onClick={() => { setCurrentIndex(0); setRatings({}); setIsComplete(false); }}
-              className="pixel-border-sm bg-[#7B5CFF] hover:bg-[#9B7FFF] text-white px-6 py-3 font-semibold transition-pixel"
+              className="pixel-border-sm bg-[var(--c-primary)] hover:bg-[var(--c-primary-hover)] text-white px-6 py-3 font-semibold transition-pixel"
             >
               Study again
             </button>
-            <Link href="/" className="pixel-border-sm bg-[#151A2B] hover:bg-[#1E2540] border-2 border-[#2A3352] text-white px-6 py-3 font-semibold transition-pixel">
+            <Link href="/" className="pixel-border-sm bg-[var(--c-surface)] hover:bg-[var(--c-surface-hover)] border-2 border-[var(--c-border)] text-white px-6 py-3 font-semibold transition-pixel">
               Home
             </Link>
           </div>
@@ -61,13 +61,13 @@ export default function StudyPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#0B0E17] text-[#E8F0E8] flex flex-col">
-      <nav className="border-b-2 border-[#2A3352]">
+    <main className="min-h-screen bg-[var(--c-bg)] text-[var(--c-fg)] flex flex-col">
+      <nav className="border-b-2 border-[var(--c-border)]">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="font-[family-name:var(--font-press-start)] text-sm">
-            <span className="text-[#7B5CFF]">study</span><span className="text-[#E8F0E8]">pod</span><span className="text-[#00E896]">.ai</span>
+            <span className="text-[var(--c-primary)]">study</span><span className="text-[var(--c-fg)]">pod</span><span className="text-[var(--c-accent)]">.ai</span>
           </Link>
-          <Link href="/" className="text-sm text-[#6B7A99] hover:text-white transition-pixel">
+          <Link href="/" className="text-sm text-[var(--c-muted)] hover:text-white transition-pixel">
             Exit
           </Link>
         </div>

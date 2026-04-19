@@ -21,22 +21,22 @@ export default function StreakCalendar({ studyDays, currentStreak, longestStreak
 
   const getIntensity = (date: string): string => {
     const count = studyDays[date] || 0;
-    if (count === 0) return 'bg-[#2A3352]';
-    if (count < 5) return 'bg-[#7B5CFF]/30';
-    if (count < 15) return 'bg-[#7B5CFF]/60';
-    return 'bg-[#7B5CFF]';
+    if (count === 0) return 'bg-[var(--c-border)]';
+    if (count < 5) return 'bg-[var(--c-primary)]/30';
+    if (count < 15) return 'bg-[var(--c-primary)]/60';
+    return 'bg-[var(--c-primary)]';
   };
 
   return (
-    <div className="pixel-border bg-[#151A2B] p-6">
+    <div className="pixel-border bg-[var(--c-surface)] p-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="font-[family-name:var(--font-press-start)] text-[10px] text-[#FFD93D]">STUDY STREAK</h3>
+        <h3 className="font-[family-name:var(--font-press-start)] text-[10px] text-[var(--c-xp)]">STUDY STREAK</h3>
         <div className="flex items-center gap-4">
-          <span className="font-[family-name:var(--font-press-start)] text-[8px] text-[#6B7A99]">
-            NOW: <span className="text-[#00E896]">{currentStreak}D</span>
+          <span className="font-[family-name:var(--font-press-start)] text-[8px] text-[var(--c-muted)]">
+            NOW: <span className="text-[var(--c-accent)]">{currentStreak}D</span>
           </span>
-          <span className="font-[family-name:var(--font-press-start)] text-[8px] text-[#6B7A99]">
-            BEST: <span className="text-[#7B5CFF]">{longestStreak}D</span>
+          <span className="font-[family-name:var(--font-press-start)] text-[8px] text-[var(--c-muted)]">
+            BEST: <span className="text-[var(--c-primary)]">{longestStreak}D</span>
           </span>
         </div>
       </div>
@@ -56,12 +56,12 @@ export default function StreakCalendar({ studyDays, currentStreak, longestStreak
       </div>
 
       <div className="flex items-center gap-[2px] mt-3">
-        <span className="font-[family-name:var(--font-press-start)] text-[6px] text-[#6B7A99] mr-1">LESS</span>
-        <div className="w-3 h-3 bg-[#2A3352]" />
-        <div className="w-3 h-3 bg-[#7B5CFF]/30" />
-        <div className="w-3 h-3 bg-[#7B5CFF]/60" />
-        <div className="w-3 h-3 bg-[#7B5CFF]" />
-        <span className="font-[family-name:var(--font-press-start)] text-[6px] text-[#6B7A99] ml-1">MORE</span>
+        <span className="font-[family-name:var(--font-press-start)] text-[6px] text-[var(--c-muted)] mr-1">LESS</span>
+        <div className="w-3 h-3 bg-[var(--c-border)]" />
+        <div className="w-3 h-3 bg-[var(--c-primary)]/30" />
+        <div className="w-3 h-3 bg-[var(--c-primary)]/60" />
+        <div className="w-3 h-3 bg-[var(--c-primary)]" />
+        <span className="font-[family-name:var(--font-press-start)] text-[6px] text-[var(--c-muted)] ml-1">MORE</span>
       </div>
     </div>
   );

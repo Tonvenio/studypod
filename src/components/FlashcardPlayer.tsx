@@ -58,16 +58,16 @@ export default function FlashcardPlayer({
     <div className="w-full max-w-xl mx-auto">
       {/* Pixel Progress Bar */}
       <div className="flex items-center justify-between mb-4">
-        <span className="font-[family-name:var(--font-press-start)] text-[8px] text-[#6B7A99]">
+        <span className="font-[family-name:var(--font-press-start)] text-[8px] text-[var(--c-muted)]">
           {cardNumber}/{totalCards}
         </span>
         <div className="flex-1 mx-4 pixel-progress pixel-border-sm overflow-hidden">
           <div
-            className="pixel-progress-fill bg-[#7B5CFF]"
+            className="pixel-progress-fill bg-[var(--c-primary)]"
             style={{ width: `${(cardNumber / totalCards) * 100}%` }}
           />
         </div>
-        <span className="font-[family-name:var(--font-press-start)] text-[8px] text-[#00E896]">
+        <span className="font-[family-name:var(--font-press-start)] text-[8px] text-[var(--c-accent)]">
           {Math.round((cardNumber / totalCards) * 100)}%
         </span>
       </div>
@@ -86,30 +86,30 @@ export default function FlashcardPlayer({
         >
           {/* Front */}
           <div
-            className="absolute inset-0 pixel-border bg-[#151A2B] border-2 border-[#2A3352] p-8 flex flex-col items-center justify-center text-center"
+            className="absolute inset-0 pixel-border bg-[var(--c-surface)] border-2 border-[var(--c-border)] p-8 flex flex-col items-center justify-center text-center"
             style={{ backfaceVisibility: 'hidden' }}
           >
-            <span className="font-[family-name:var(--font-press-start)] text-[8px] text-[#7B5CFF] uppercase tracking-wider mb-4">QUESTION</span>
+            <span className="font-[family-name:var(--font-press-start)] text-[8px] text-[var(--c-primary)] uppercase tracking-wider mb-4">QUESTION</span>
             <p className="text-xl md:text-2xl font-semibold leading-relaxed">{front}</p>
-            <p className="font-[family-name:var(--font-press-start)] text-[8px] text-[#6B7A99] mt-6">PRESS SPACE TO REVEAL</p>
+            <p className="font-[family-name:var(--font-press-start)] text-[8px] text-[var(--c-muted)] mt-6">PRESS SPACE TO REVEAL</p>
           </div>
 
           {/* Back */}
           <div
-            className="absolute inset-0 pixel-border bg-[#151A2B] border-2 border-[#7B5CFF]/40 p-8 flex flex-col items-center justify-center text-center overflow-y-auto"
+            className="absolute inset-0 pixel-border bg-[var(--c-surface)] border-2 border-[#7B5CFF]/40 p-8 flex flex-col items-center justify-center text-center overflow-y-auto"
             style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
           >
-            <span className="font-[family-name:var(--font-press-start)] text-[8px] text-[#00E896] uppercase tracking-wider mb-4">ANSWER</span>
+            <span className="font-[family-name:var(--font-press-start)] text-[8px] text-[var(--c-accent)] uppercase tracking-wider mb-4">ANSWER</span>
             <p className="text-lg md:text-xl font-medium leading-relaxed mb-4">{back}</p>
             {explanation && (
-              <p className="text-sm text-[#6B7A99] leading-relaxed border-t-2 border-[#2A3352] pt-4 mt-2">
+              <p className="text-sm text-[var(--c-muted)] leading-relaxed border-t-2 border-[var(--c-border)] pt-4 mt-2">
                 {explanation}
               </p>
             )}
             {audioUrl && (
               <button
                 onClick={(e) => { e.stopPropagation(); playAudio(); }}
-                className="mt-4 flex items-center gap-2 pixel-border-sm bg-[#7B5CFF]/10 hover:bg-[#7B5CFF]/20 text-[#7B5CFF] px-4 py-2 text-sm font-medium transition-pixel"
+                className="mt-4 flex items-center gap-2 pixel-border-sm bg-[var(--c-primary)]/10 hover:bg-[var(--c-primary)]/20 text-[var(--c-primary)] px-4 py-2 text-sm font-medium transition-pixel"
               >
                 {isPlaying ? '▶ PLAYING...' : '▶ LISTEN'}
               </button>
@@ -122,10 +122,10 @@ export default function FlashcardPlayer({
       {isFlipped && onRate && (
         <div className="grid grid-cols-4 gap-2 mt-6">
           {[
-            { key: 'again' as const, label: 'AGAIN', color: 'bg-[#FF6B8A]', hint: '1' },
-            { key: 'hard' as const, label: 'HARD', color: 'bg-[#FFD93D] text-[#0B0E17]', hint: '2' },
-            { key: 'good' as const, label: 'GOOD', color: 'bg-[#7B5CFF]', hint: '3' },
-            { key: 'easy' as const, label: 'EASY', color: 'bg-[#00E896] text-[#0B0E17]', hint: '4' },
+            { key: 'again' as const, label: 'AGAIN', color: 'bg-[var(--c-danger)]', hint: '1' },
+            { key: 'hard' as const, label: 'HARD', color: 'bg-[var(--c-xp)] text-[var(--c-bg)]', hint: '2' },
+            { key: 'good' as const, label: 'GOOD', color: 'bg-[var(--c-primary)]', hint: '3' },
+            { key: 'easy' as const, label: 'EASY', color: 'bg-[var(--c-accent)] text-[var(--c-bg)]', hint: '4' },
           ].map((btn) => (
             <button
               key={btn.key}
@@ -139,7 +139,7 @@ export default function FlashcardPlayer({
         </div>
       )}
 
-      <p className="font-[family-name:var(--font-press-start)] text-[8px] text-[#6B7A99] text-center mt-3">
+      <p className="font-[family-name:var(--font-press-start)] text-[8px] text-[var(--c-muted)] text-center mt-3">
         SPACE = FLIP · 1-4 = RATE
       </p>
     </div>

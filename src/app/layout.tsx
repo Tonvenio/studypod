@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Press_Start_2P } from "next/font/google";
+import ThemeProvider from "@/components/ThemeProvider";
 import "./globals.css";
 
 const inter = Inter({
@@ -26,9 +27,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${pressStart.variable} dark`}>
-      <body className="min-h-screen bg-[#0B0E17] text-[#E8F0E8] font-sans antialiased">
-        {children}
+    <html lang="en" className={`${inter.variable} ${pressStart.variable}`} data-theme="dark" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: `
+          try {
+            const t = localStorage.getItem('studypod-theme');
+            if (t === 'light') document.documentElement.setAttribute('data-theme', 'light');
+          } catch {}
+        `}} />
+      </head>
+      <body className="min-h-screen font-sans antialiased" style={{ background: 'var(--c-bg)', color: 'var(--c-fg)' }}>
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
