@@ -50,6 +50,7 @@ function NewDeckPage() {
   const [summary, setSummary] = useState('');
   const [error, setError] = useState('');
   const [deckId] = useState(`deck-${Date.now()}`);
+  const [factCheck, setFactCheck] = useState<{ total: number; passed: number; fixed: number; removed: number } | null>(null);
   const [audioStates, setAudioStates] = useState<Record<string, AudioState>>({});
   const [renderingCount, setRenderingCount] = useState(0);
   const autoRenderStarted = useRef(false);
@@ -138,6 +139,7 @@ function NewDeckPage() {
       const generatedCards = data.cards || [];
       setCards(generatedCards);
       setSummary(data.research?.summary || '');
+      if (data.factCheck) setFactCheck(data.factCheck);
       setProgress(100);
       setStage('done');
 
@@ -281,6 +283,20 @@ function NewDeckPage() {
             <div className="mb-8">
               <h1 className="text-3xl font-bold mb-2">{topic}</h1>
               {summary && <p className="text-[var(--c-muted)] mb-4">{summary}</p>}
+
+              {/* Fact-check badge */}
+              {factCheck && (
+                <div className="pixel-border-sm bg-[var(--c-accent)]/10 px-4 py-2 mb-4 inline-flex items-center gap-2">
+                  <span className="font-[family-name:var(--font-press-start)] text-[8px] text-[var(--c-accent)]">
+                    VERIFIED
+                  </span>
+                  <span className="text-xs text-[var(--c-muted)]">
+                    {factCheck.passed}/{factCheck.total} cards passed
+                    {factCheck.fixed > 0 && ` · ${factCheck.fixed} corrected`}
+                    {factCheck.removed > 0 && ` · ${factCheck.removed} removed`}
+                  </span>
+                </div>
+              )}
 
               {/* Audio rendering status banner */}
               {renderingCount > 0 && (
