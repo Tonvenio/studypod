@@ -1,0 +1,78 @@
+import Link from 'next/link';
+import AnkiExportButton from '@/components/AnkiExportButton';
+
+const MOCK_DECK = {
+  id: 'demo-deck',
+  topic: 'Photosynthesis',
+  description: 'A comprehensive set of flashcards covering the process of photosynthesis in plants.',
+  language: 'en',
+  cardCount: 3,
+  cards: [
+    { id: '1', front: 'What is photosynthesis?', back: 'The process by which plants convert light energy into chemical energy.', explanation: '6CO2 + 6H2O + light = C6H12O6 + 6O2', difficulty: 2, audioUrl: null, orderIndex: 0 },
+    { id: '2', front: 'Where does photosynthesis occur?', back: 'In the chloroplasts, specifically in the thylakoid membranes and stroma.', explanation: 'Chloroplasts contain chlorophyll, the green pigment that captures light.', difficulty: 1, audioUrl: null, orderIndex: 1 },
+    { id: '3', front: 'What are the two stages of photosynthesis?', back: 'The light-dependent reactions and the Calvin cycle (light-independent reactions).', explanation: 'Light reactions happen in thylakoids; Calvin cycle happens in the stroma.', difficulty: 3, audioUrl: null, orderIndex: 2 },
+  ],
+};
+
+export default function DeckPage() {
+  const deck = MOCK_DECK;
+
+  const difficultyColor = (d: number) => {
+    if (d <= 2) return 'bg-[#10B981]/20 text-[#10B981]';
+    if (d <= 3) return 'bg-[#F59E0B]/20 text-[#F59E0B]';
+    return 'bg-[#FB7185]/20 text-[#FB7185]';
+  };
+
+  const difficultyLabel = (d: number) => {
+    return ['', 'Basic', 'Easy', 'Medium', 'Hard', 'Expert'][d] || 'Medium';
+  };
+
+  return (
+    <main className="min-h-screen bg-[#0F172A] text-[#F8FAFC]">
+      <nav className="border-b border-[#334155]">
+        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+          <Link href="/" className="text-xl font-bold">
+            <span className="text-[#6C3AED]">study</span>pod<span className="text-[#10B981]">.ai</span>
+          </Link>
+        </div>
+      </nav>
+
+      <div className="max-w-4xl mx-auto px-4 py-12">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold mb-2">{deck.topic}</h1>
+          <p className="text-[#94A3B8] mb-6">{deck.description}</p>
+
+          <div className="flex flex-wrap gap-3">
+            <Link
+              href={`/study/${deck.id}`}
+              className="bg-[#6C3AED] hover:bg-[#5B21B6] text-white rounded-xl px-6 py-3 font-semibold transition-colors"
+            >
+              Start studying ({deck.cardCount} cards)
+            </Link>
+            <AnkiExportButton deckId={deck.id} topic={deck.topic} cardCount={deck.cardCount} />
+          </div>
+        </div>
+
+        <h2 className="text-xl font-semibold mb-4">Cards in this deck</h2>
+        <div className="grid gap-3">
+          {deck.cards.map((card, i) => (
+            <div key={card.id} className="bg-[#1E293B] border border-[#334155] rounded-2xl p-5 hover:border-[#6C3AED]/30 transition-colors">
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-xs text-[#94A3B8]">#{i + 1}</span>
+                    <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${difficultyColor(card.difficulty)}`}>
+                      {difficultyLabel(card.difficulty)}
+                    </span>
+                  </div>
+                  <p className="font-medium mb-1">{card.front}</p>
+                  <p className="text-sm text-[#94A3B8]">{card.back}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </main>
+  );
+}
