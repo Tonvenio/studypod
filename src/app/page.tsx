@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Nav from '@/components/Nav';
+import PixelStudyAnimation from '@/components/PixelStudyAnimation';
 
 const QUESTS = [
   { topic: 'Photosynthesis', level: 3, xp: 150 },
@@ -60,6 +61,11 @@ export default function HomePage() {
             </p>
           </div>
         </div>
+      </section>
+
+      {/* Pixel Study Animation */}
+      <section className="py-8">
+        <PixelStudyAnimation />
       </section>
 
       {/* Quest Board */}

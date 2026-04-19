@@ -37,7 +37,7 @@ export default function AnkiExportButton({ deckId, topic, cardCount }: AnkiExpor
     <button
       onClick={handleDownload}
       disabled={isDownloading}
-      className="flex items-center gap-2 bg-[#10B981] hover:bg-[#059669] disabled:opacity-50 text-white rounded-xl px-5 py-3 font-semibold transition-colors"
+      className="flex items-center gap-2 bg-[var(--c-accent)] hover:bg-[var(--c-accent-hover)] disabled:opacity-50 text-white pixel-border-sm px-5 py-3 font-semibold transition-pixel"
     >
       {isDownloading ? (
         <>

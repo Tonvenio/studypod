@@ -7,6 +7,7 @@ import AudioMiniPlayer from '@/components/AudioMiniPlayer';
 import DownloadButton from '@/components/DownloadButton';
 import DownloadAllButton from '@/components/DownloadAllButton';
 import PodcastSubscribe from '@/components/PodcastSubscribe';
+import { saveLocalDeck } from '@/lib/deck-store';
 
 interface GeneratedCard {
   front: string;
@@ -134,10 +135,26 @@ function NewDeckPage() {
       setStage('generating');
 
       const data = await response.json();
-      setCards(data.cards || []);
+      const generatedCards = data.cards || [];
+      setCards(generatedCards);
       setSummary(data.research?.summary || '');
       setProgress(100);
       setStage('done');
+
+      // Auto-save deck locally
+      try {
+        saveLocalDeck({
+          id: deckId,
+          topic: searchTopic,
+          description: data.research?.summary || '',
+          language: 'de',
+          cards: generatedCards.map((c: GeneratedCard) => ({
+            front: c.front, back: c.back, explanation: c.explanation,
+            difficulty: c.difficulty, audioUrl: null,
+          })),
+          createdAt: new Date().toISOString(),
+        });
+      } catch {}
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong');
       setStage('error');
@@ -203,7 +220,7 @@ function NewDeckPage() {
         {(stage === 'researching' || stage === 'generating') && (
           <div className="text-center py-16">
             <div className="mb-8">
-              <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-[var(--c-primary)]/10 mb-6">
+              <div className="inline-flex items-center justify-center w-20 h-20  bg-[var(--c-primary)]/10 mb-6">
                 <svg className="w-10 h-10 text-[var(--c-primary)] animate-spin" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
@@ -222,9 +239,9 @@ function NewDeckPage() {
               </p>
             </div>
             <div className="max-w-md mx-auto">
-              <div className="h-2 bg-[var(--c-border)] rounded-full overflow-hidden">
+              <div className="h-2 bg-[var(--c-border)]  overflow-hidden">
                 <div
-                  className="h-full bg-[var(--c-primary)] rounded-full transition-all duration-500"
+                  className="h-full bg-[var(--c-primary)]  transition-all duration-500"
                   style={{ width: `${progress}%` }}
                 />
               </div>
@@ -236,7 +253,7 @@ function NewDeckPage() {
         {/* Error stage */}
         {stage === 'error' && (
           <div className="text-center py-16">
-            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-[var(--c-danger)]/10 mb-6">
+            <div className="inline-flex items-center justify-center w-20 h-20  bg-[var(--c-danger)]/10 mb-6">
               <span className="text-4xl">!</span>
             </div>
             <h2 className="text-2xl font-bold mb-2">Something went wrong</h2>
@@ -325,7 +342,7 @@ function NewDeckPage() {
                   <div key={i} className="bg-[var(--c-surface)] border border-[var(--c-border)] pixel-border p-5 hover:border-[#7B5CFF]/30 transition-pixel">
                     <div className="flex items-center gap-2 mb-2">
                       <span className="text-xs text-[var(--c-muted)]">#{i + 1}</span>
-                      <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${difficultyColor(card.difficulty)}`}>
+                      <span className={`text-xs font-medium px-2 py-0.5  ${difficultyColor(card.difficulty)}`}>
                         {difficultyLabel(card.difficulty)}
                       </span>
                       {audio?.status === 'done' && audio.durationSeconds && (

@@ -37,7 +37,7 @@ export default function DownloadAllButton({ deckId, topic, cardCount }: Download
     <button
       onClick={handleDownload}
       disabled={isDownloading}
-      className="flex items-center gap-2 bg-[#1E293B] hover:bg-[#334155] border border-[#334155] text-white rounded-xl px-5 py-3 font-semibold transition-colors disabled:opacity-50"
+      className="flex items-center gap-2 bg-[var(--c-surface)] hover:bg-[var(--c-border)] border border-[var(--c-border)] text-white pixel-border-sm px-5 py-3 font-semibold transition-pixel disabled:opacity-50"
     >
       {isDownloading ? (
         <>

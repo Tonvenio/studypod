@@ -31,15 +31,15 @@ export default function MobileListeningGuide() {
             </p>
             <div className="space-y-3">
               <div className="flex items-start gap-3">
-                <span className="w-6 h-6 bg-[var(--c-primary)]/20 text-[var(--c-primary)] rounded-lg flex items-center justify-center text-sm font-bold shrink-0 mt-0.5">1</span>
+                <span className="w-6 h-6 bg-[var(--c-primary)]/20 text-[var(--c-primary)] pixel-border-sm flex items-center justify-center text-sm font-bold shrink-0 mt-0.5">1</span>
                 <div><p className="font-medium">Create a free account</p><p className="text-sm text-[var(--c-muted)]">Sign up at studypod.ai — takes 10 seconds.</p></div>
               </div>
               <div className="flex items-start gap-3">
-                <span className="w-6 h-6 bg-[var(--c-primary)]/20 text-[var(--c-primary)] rounded-lg flex items-center justify-center text-sm font-bold shrink-0 mt-0.5">2</span>
+                <span className="w-6 h-6 bg-[var(--c-primary)]/20 text-[var(--c-primary)] pixel-border-sm flex items-center justify-center text-sm font-bold shrink-0 mt-0.5">2</span>
                 <div><p className="font-medium">Copy your personal feed URL</p><p className="text-sm text-[var(--c-muted)]">Find it on your dashboard under &quot;Your podcast feed&quot;.</p></div>
               </div>
               <div className="flex items-start gap-3">
-                <span className="w-6 h-6 bg-[var(--c-primary)]/20 text-[var(--c-primary)] rounded-lg flex items-center justify-center text-sm font-bold shrink-0 mt-0.5">3</span>
+                <span className="w-6 h-6 bg-[var(--c-primary)]/20 text-[var(--c-primary)] pixel-border-sm flex items-center justify-center text-sm font-bold shrink-0 mt-0.5">3</span>
                 <div><p className="font-medium">Add to your podcast app</p><p className="text-sm text-[var(--c-muted)]">Open Apple Podcasts, Pocket Casts, or Overcast and look for &quot;Add by URL&quot;.</p></div>
               </div>
             </div>
@@ -59,15 +59,15 @@ export default function MobileListeningGuide() {
             <p className="text-[var(--c-muted)]">Download individual cards or the entire deck as a ZIP file. No account needed.</p>
             <div className="space-y-3">
               <div className="flex items-start gap-3">
-                <span className="w-6 h-6 bg-[var(--c-border)] text-[var(--c-muted)] rounded-lg flex items-center justify-center text-sm font-bold shrink-0 mt-0.5">1</span>
+                <span className="w-6 h-6 bg-[var(--c-border)] text-[var(--c-muted)] pixel-border-sm flex items-center justify-center text-sm font-bold shrink-0 mt-0.5">1</span>
                 <div><p className="font-medium">Click the download button</p><p className="text-sm text-[var(--c-muted)]">Each card has a download icon. Or use &quot;Download all MP3s&quot; for the whole deck.</p></div>
               </div>
               <div className="flex items-start gap-3">
-                <span className="w-6 h-6 bg-[var(--c-border)] text-[var(--c-muted)] rounded-lg flex items-center justify-center text-sm font-bold shrink-0 mt-0.5">2</span>
+                <span className="w-6 h-6 bg-[var(--c-border)] text-[var(--c-muted)] pixel-border-sm flex items-center justify-center text-sm font-bold shrink-0 mt-0.5">2</span>
                 <div><p className="font-medium">Transfer to your phone</p><p className="text-sm text-[var(--c-muted)]">Use AirDrop (iPhone), email the files to yourself, or save to iCloud/Google Drive.</p></div>
               </div>
               <div className="flex items-start gap-3">
-                <span className="w-6 h-6 bg-[var(--c-border)] text-[var(--c-muted)] rounded-lg flex items-center justify-center text-sm font-bold shrink-0 mt-0.5">3</span>
+                <span className="w-6 h-6 bg-[var(--c-border)] text-[var(--c-muted)] pixel-border-sm flex items-center justify-center text-sm font-bold shrink-0 mt-0.5">3</span>
                 <div><p className="font-medium">Play in Files or Music app</p><p className="text-sm text-[var(--c-muted)]">Open the MP3 from your Files app (iOS) or file manager (Android).</p></div>
               </div>
             </div>

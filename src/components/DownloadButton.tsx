@@ -38,7 +38,7 @@ export default function DownloadButton({ cardId, size = 'sm' }: DownloadButtonPr
         onClick={handleDownload}
         disabled={isDownloading}
         title="Download MP3"
-        className="w-8 h-8 flex items-center justify-center text-[#94A3B8] hover:text-[#6C3AED] hover:bg-[#6C3AED]/10 rounded-lg transition-colors disabled:opacity-50"
+        className="w-8 h-8 flex items-center justify-center text-[var(--c-muted)] hover:text-[var(--c-primary)] hover:bg-[var(--c-primary)]/10 pixel-border-sm transition-pixel disabled:opacity-50"
       >
         {isDownloading ? (
           <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -58,7 +58,7 @@ export default function DownloadButton({ cardId, size = 'sm' }: DownloadButtonPr
     <button
       onClick={handleDownload}
       disabled={isDownloading}
-      className="flex items-center gap-2 text-sm text-[#94A3B8] hover:text-[#6C3AED] bg-[#334155]/50 hover:bg-[#6C3AED]/10 rounded-xl px-3 py-2 transition-colors disabled:opacity-50"
+      className="flex items-center gap-2 text-sm text-[var(--c-muted)] hover:text-[var(--c-primary)] bg-[var(--c-border)]/50 hover:bg-[var(--c-primary)]/10 pixel-border-sm px-3 py-2 transition-pixel disabled:opacity-50"
     >
       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
