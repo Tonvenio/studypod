@@ -24,7 +24,7 @@ interface ProcessResult {
 }
 
 export async function processAudio(options: ProcessOptions): Promise<ProcessResult> {
-  const { segments, outputPath, silenceBetweenMs = 300 } = options;
+  const { segments, outputPath, silenceBetweenMs = 150 } = options;
 
   const dir = path.dirname(outputPath);
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
@@ -39,10 +39,10 @@ export async function processAudio(options: ProcessOptions): Promise<ProcessResu
     { stdio: 'pipe' }
   );
 
-  // Generate 2-second silence for [pause] segments
+  // Generate 1-second silence for [pause] segments
   const pausePath = path.join(tmpDir, 'pause.mp3');
   execSync(
-    `ffmpeg -y -f lavfi -i anullsrc=r=24000:cl=mono -t 2 -q:a 9 "${pausePath}"`,
+    `ffmpeg -y -f lavfi -i anullsrc=r=24000:cl=mono -t 1 -q:a 9 "${pausePath}"`,
     { stdio: 'pipe' }
   );
 

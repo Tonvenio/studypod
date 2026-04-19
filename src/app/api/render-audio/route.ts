@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
     const result = await processAudio({
       segments: renderedSegments,
       outputPath,
-      silenceBetweenMs: 400,
+      silenceBetweenMs: 150,
     });
 
     return NextResponse.json({

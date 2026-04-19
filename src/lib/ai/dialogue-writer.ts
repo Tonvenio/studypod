@@ -219,7 +219,7 @@ Return ONLY valid JSON array, no markdown fences.`;
     body: JSON.stringify({
       contents: [{ parts: [{ text: prompt }] }],
       generationConfig: {
-        temperature: 0.8, // Slightly higher for more creative variety
+        temperature: 0.5,
         maxOutputTokens: 8192,
         responseMimeType: 'application/json',
       },
