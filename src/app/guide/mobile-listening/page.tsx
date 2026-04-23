@@ -1,16 +1,12 @@
 import Link from 'next/link';
+import Nav from '@/components/Nav';
 
 export default function MobileListeningGuide() {
   return (
     <main className="min-h-screen bg-[var(--c-bg)] text-[var(--c-fg)]">
-      <nav className="border-b border-[var(--c-border)]">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-          <Link href="/" className="text-xl font-bold">
-            <span className="text-[var(--c-primary)]">study</span>pod<span className="text-[var(--c-accent)]">.ai</span>
-          </Link>
-          <Link href="/" className="text-sm text-[var(--c-muted)] hover:text-white transition-pixel">Home</Link>
-        </div>
-      </nav>
+      <Nav rightContent={
+        <Link href="/" className="text-xs text-[var(--c-muted)] hover:text-[var(--c-fg)] transition-pixel py-2">Home</Link>
+      } />
 
       <div className="max-w-3xl mx-auto px-4 py-12">
         <h1 className="font-[family-name:var(--font-press-start)] text-xl mb-2">LISTEN ON YOUR PHONE</h1>

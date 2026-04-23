@@ -35,7 +35,7 @@ export default function RegisterPage() {
 
   if (success) {
     return (
-      <main className="min-h-screen bg-[var(--c-bg)] text-[var(--c-fg)] flex items-center justify-center px-4">
+      <main className="min-h-dvh bg-[var(--c-bg)] text-[var(--c-fg)] flex items-center justify-center px-4">
         <div className="text-center max-w-sm">
           <div className="font-[family-name:var(--font-press-start)] text-2xl text-[var(--c-accent)] mb-4">✓</div>
           <h1 className="font-[family-name:var(--font-press-start)] text-lg mb-2">ACCOUNT CREATED</h1>
@@ -49,7 +49,7 @@ export default function RegisterPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[var(--c-bg)] text-[var(--c-fg)] flex items-center justify-center px-4">
+    <main className="min-h-dvh bg-[var(--c-bg)] text-[var(--c-fg)] flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <Link href="/" className="font-[family-name:var(--font-press-start)] text-sm inline-block mb-6">
@@ -68,7 +68,7 @@ export default function RegisterPage() {
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full pixel-border bg-[var(--c-surface)] px-4 py-3 text-[var(--c-fg)] placeholder:text-[var(--c-muted)] focus:outline-none"
+              className="w-full pixel-border bg-[var(--c-surface)] px-4 py-3.5 text-base text-[var(--c-fg)] placeholder:text-[var(--c-muted)] focus:outline-none"
               placeholder="your_name"
               required
             />
@@ -79,7 +79,7 @@ export default function RegisterPage() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full pixel-border bg-[var(--c-surface)] px-4 py-3 text-[var(--c-fg)] placeholder:text-[var(--c-muted)] focus:outline-none"
+              className="w-full pixel-border bg-[var(--c-surface)] px-4 py-3.5 text-base text-[var(--c-fg)] placeholder:text-[var(--c-muted)] focus:outline-none"
               placeholder="your@email.com"
               required
             />
@@ -90,7 +90,7 @@ export default function RegisterPage() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full pixel-border bg-[var(--c-surface)] px-4 py-3 text-[var(--c-fg)] placeholder:text-[var(--c-muted)] focus:outline-none"
+              className="w-full pixel-border bg-[var(--c-surface)] px-4 py-3.5 text-base text-[var(--c-fg)] placeholder:text-[var(--c-muted)] focus:outline-none"
               placeholder="••••••••"
               minLength={6}
               required

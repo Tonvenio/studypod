@@ -3,11 +3,12 @@
 import { useState, useEffect, useCallback, useRef, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import Nav from '@/components/Nav';
 import AudioMiniPlayer from '@/components/AudioMiniPlayer';
 import DownloadButton from '@/components/DownloadButton';
 import DownloadAllButton from '@/components/DownloadAllButton';
 import PodcastSubscribe from '@/components/PodcastSubscribe';
-import { saveLocalDeck } from '@/lib/deck-store';
+import { saveLocalDeck, saveRemoteDeck } from '@/lib/deck-store';
 
 interface GeneratedCard {
   front: string;
@@ -25,7 +26,17 @@ interface AudioState {
 
 type Stage = 'input' | 'researching' | 'generating' | 'done' | 'error';
 
-const AUTO_RENDER_COUNT = 2; // Auto-render audio for first N cards
+function getAutoRenderCount(): number {
+  try {
+    const raw = localStorage.getItem('studypod-settings');
+    if (raw) {
+      const s = JSON.parse(raw);
+      if (s.autoRenderAudio === false) return 0;
+      return s.autoRenderCount || 2;
+    }
+  } catch {}
+  return 2;
+}
 
 export default function NewDeckPageWrapper() {
   return (
@@ -42,23 +53,47 @@ export default function NewDeckPageWrapper() {
 function NewDeckPage() {
   const searchParams = useSearchParams();
   const initialTopic = searchParams.get('topic') || '';
+  const initialMode = searchParams.get('mode') === 'upload' ? 'upload' : 'topic';
 
+  const [mode, setMode] = useState<'topic' | 'upload'>(initialMode);
   const [topic, setTopic] = useState(initialTopic);
   const [stage, setStage] = useState<Stage>(initialTopic ? 'researching' : 'input');
   const [progress, setProgress] = useState(0);
   const [cards, setCards] = useState<GeneratedCard[]>([]);
   const [summary, setSummary] = useState('');
   const [error, setError] = useState('');
-  const [deckId] = useState(`deck-${Date.now()}`);
+  const [deckId, setDeckId] = useState(`deck-${Date.now()}`);
   const [factCheck, setFactCheck] = useState<{ total: number; passed: number; fixed: number; removed: number } | null>(null);
   const [audioStates, setAudioStates] = useState<Record<string, AudioState>>({});
   const [renderingCount, setRenderingCount] = useState(0);
   const autoRenderStarted = useRef(false);
+  const [remoteDeckId, setRemoteDeckId] = useState<string | null>(null);
+  const [dbCardIds, setDbCardIds] = useState<string[]>([]);
+  const [fileName, setFileName] = useState('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Auto-start research if topic was provided via URL
+  // Load user's language preference
+  const getUserLanguage = () => {
+    try {
+      const raw = localStorage.getItem('studypod-settings');
+      if (raw) return JSON.parse(raw).language || 'en';
+    } catch {}
+    return 'en';
+  };
+
+  // Auto-start research if topic was provided via URL, or pick up pending upload
   useEffect(() => {
     if (initialTopic) {
       startResearch(initialTopic);
+    } else if (searchParams.get('pending') === 'true') {
+      // Pick up file from in-memory store (set by HeroUploadLink)
+      import('@/components/HeroUploadLink').then(({ getPendingFile }) => {
+        const file = getPendingFile();
+        if (file) {
+          setMode('upload');
+          startDocumentResearch(file);
+        }
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -72,8 +107,15 @@ function NewDeckPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          card: { id: cardId, front: card.front, back: card.back, explanation: card.explanation },
-          language: 'de',
+          card: {
+            id: cardId,
+            front: card.front,
+            back: card.back,
+            explanation: card.explanation,
+            deckId: remoteDeckId || undefined,
+            flashcardDbId: dbCardIds[parseInt(cardId.split('-').pop() || '0')] || undefined,
+          },
+          language: getUserLanguage(),
         }),
       });
 
@@ -95,13 +137,13 @@ function NewDeckPage() {
     } finally {
       setRenderingCount((c) => c - 1);
     }
-  }, []);
+  }, [remoteDeckId, dbCardIds]);
 
   // Auto-render audio for first N cards once flashcards are ready
   useEffect(() => {
     if (stage === 'done' && cards.length > 0 && !autoRenderStarted.current) {
       autoRenderStarted.current = true;
-      const toRender = cards.slice(0, AUTO_RENDER_COUNT);
+      const toRender = cards.slice(0, getAutoRenderCount());
       toRender.forEach((card, i) => {
         const cardId = `${deckId}-${i}`;
         renderAudioForCard(card, cardId);
@@ -122,7 +164,89 @@ function NewDeckPage() {
       const response = await fetch('/api/research', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ topic: searchTopic, language: 'de', depth: 'standard' }),
+        body: JSON.stringify({ topic: searchTopic, language: getUserLanguage(), depth: 'standard' }),
+      });
+
+      clearInterval(progressInterval);
+
+      if (!response.ok) {
+        const errData = await response.json();
+        if (errData.upgradeRequired) {
+          setError(errData.error + ' ');
+          setStage('error');
+          return;
+        }
+        throw new Error(errData.error || `Request failed (${response.status})`);
+      }
+
+      setProgress(90);
+      setStage('generating');
+
+      const data = await response.json();
+      const generatedCards = data.cards || [];
+      setCards(generatedCards);
+      setSummary(data.research?.summary || '');
+      if (data.factCheck) setFactCheck(data.factCheck);
+      setProgress(100);
+      setStage('done');
+
+      // Save deck
+      const deckData = {
+        id: deckId,
+        topic: searchTopic,
+        description: data.research?.summary || '',
+        language: getUserLanguage(),
+        cards: generatedCards.map((c: GeneratedCard) => ({
+          front: c.front, back: c.back, explanation: c.explanation,
+          difficulty: c.difficulty, audioUrl: null,
+        })),
+        createdAt: new Date().toISOString(),
+      };
+      try { saveLocalDeck(deckData); } catch {}
+
+      // Save to Supabase for logged-in users
+      try {
+        const remoteId = await saveRemoteDeck(deckData);
+        if (remoteId) {
+          setDeckId(remoteId);
+          setRemoteDeckId(remoteId);
+          // Fetch DB flashcard IDs for audio persistence
+          const { createClient } = await import('@/lib/supabase/client');
+          const supabase = createClient();
+          const { data: dbCards } = await supabase
+            .from('flashcards')
+            .select('id')
+            .eq('deck_id', remoteId)
+            .order('order_index', { ascending: true });
+          if (dbCards) setDbCardIds(dbCards.map((c: { id: string }) => c.id));
+        }
+      } catch {}
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong');
+      setStage('error');
+    }
+  }
+
+  async function startDocumentResearch(file: File) {
+    setFileName(file.name);
+    setTopic(file.name.replace(/\.[^.]+$/, ''));
+    setStage('researching');
+    setProgress(10);
+    setError('');
+
+    try {
+      const progressInterval = setInterval(() => {
+        setProgress((p) => Math.min(p + Math.random() * 6, 85));
+      }, 600);
+
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('language', getUserLanguage());
+      formData.append('depth', 'standard');
+
+      const response = await fetch('/api/research-document', {
+        method: 'POST',
+        body: formData,
       });
 
       clearInterval(progressInterval);
@@ -138,29 +262,48 @@ function NewDeckPage() {
       const data = await response.json();
       const generatedCards = data.cards || [];
       setCards(generatedCards);
+      setTopic(data.research?.topic || file.name);
       setSummary(data.research?.summary || '');
       if (data.factCheck) setFactCheck(data.factCheck);
       setProgress(100);
       setStage('done');
 
-      // Auto-save deck locally
+      const deckData = {
+        id: deckId,
+        topic: data.research?.topic || file.name,
+        description: data.research?.summary || '',
+        language: getUserLanguage(),
+        cards: generatedCards.map((c: GeneratedCard) => ({
+          front: c.front, back: c.back, explanation: c.explanation,
+          difficulty: c.difficulty, audioUrl: null,
+        })),
+        createdAt: new Date().toISOString(),
+      };
+      try { saveLocalDeck(deckData); } catch {}
       try {
-        saveLocalDeck({
-          id: deckId,
-          topic: searchTopic,
-          description: data.research?.summary || '',
-          language: 'de',
-          cards: generatedCards.map((c: GeneratedCard) => ({
-            front: c.front, back: c.back, explanation: c.explanation,
-            difficulty: c.difficulty, audioUrl: null,
-          })),
-          createdAt: new Date().toISOString(),
-        });
+        const remoteId = await saveRemoteDeck(deckData);
+        if (remoteId) {
+          setDeckId(remoteId);
+          setRemoteDeckId(remoteId);
+          const { createClient } = await import('@/lib/supabase/client');
+          const supabase = createClient();
+          const { data: dbCards } = await supabase
+            .from('flashcards')
+            .select('id')
+            .eq('deck_id', remoteId)
+            .order('order_index', { ascending: true });
+          if (dbCards) setDbCardIds(dbCards.map((c: { id: string }) => c.id));
+        }
       } catch {}
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong');
       setStage('error');
     }
+  }
+
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (file) startDocumentResearch(file);
   }
 
   function handleSubmit(e: React.FormEvent) {
@@ -180,41 +323,89 @@ function NewDeckPage() {
 
   return (
     <main className="min-h-screen bg-[var(--c-bg)] text-[var(--c-fg)]">
-      <nav className="border-b border-[var(--c-border)]">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-          <Link href="/" className="text-xl font-bold">
-            <span className="text-[var(--c-primary)]">study</span>pod<span className="text-[var(--c-accent)]">.ai</span>
-          </Link>
-          <Link href="/" className="text-sm text-[var(--c-muted)] hover:text-white transition-pixel">
-            Home
-          </Link>
-        </div>
-      </nav>
+      <Nav rightContent={
+        <Link href="/" className="text-xs text-[var(--c-muted)] hover:text-[var(--c-fg)] transition-pixel py-2">Home</Link>
+      } />
 
-      <div className="max-w-3xl mx-auto px-4 py-12">
+      <div className="max-w-3xl mx-auto px-3 sm:px-4 py-6 sm:py-12">
         {/* Input stage */}
         {stage === 'input' && (
           <div className="text-center">
-            <h1 className="text-3xl font-bold mb-6">Create a new deck</h1>
-            <form onSubmit={handleSubmit} className="max-w-xl mx-auto">
-              <div className="relative">
+            <h1 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">Create a new deck</h1>
+
+            {/* Mode tabs */}
+            <div className="flex justify-center gap-1 mb-8">
+              <button
+                onClick={() => setMode('topic')}
+                className={`font-[family-name:var(--font-press-start)] text-[10px] px-5 py-3 pixel-border-sm transition-pixel ${
+                  mode === 'topic'
+                    ? 'bg-[var(--c-primary)] text-white'
+                    : 'bg-[var(--c-surface)] text-[var(--c-muted)] hover:text-white'
+                }`}
+              >
+                TOPIC
+              </button>
+              <button
+                onClick={() => setMode('upload')}
+                className={`font-[family-name:var(--font-press-start)] text-[10px] px-5 py-3 pixel-border-sm transition-pixel ${
+                  mode === 'upload'
+                    ? 'bg-[var(--c-primary)] text-white'
+                    : 'bg-[var(--c-surface)] text-[var(--c-muted)] hover:text-white'
+                }`}
+              >
+                UPLOAD
+              </button>
+            </div>
+
+            {mode === 'topic' && (
+              <form onSubmit={handleSubmit} className="max-w-xl mx-auto">
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={topic}
+                    onChange={(e) => setTopic(e.target.value)}
+                    placeholder="Enter a study topic..."
+                    className="w-full bg-[var(--c-surface)] border border-[var(--c-border)] pixel-border px-6 py-4 pr-32 text-lg text-white placeholder:text-[var(--c-muted)] focus:outline-none focus:ring-2 focus:ring-[#7B5CFF]"
+                    autoFocus
+                  />
+                  <button
+                    type="submit"
+                    disabled={!topic.trim()}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 bg-[var(--c-primary)] hover:bg-[var(--c-primary-hover)] disabled:opacity-50 text-white pixel-border-sm px-5 py-2.5 font-semibold transition-pixel"
+                  >
+                    Generate
+                  </button>
+                </div>
+              </form>
+            )}
+
+            {mode === 'upload' && (
+              <div className="max-w-xl mx-auto">
                 <input
-                  type="text"
-                  value={topic}
-                  onChange={(e) => setTopic(e.target.value)}
-                  placeholder="Enter a study topic..."
-                  className="w-full bg-[var(--c-surface)] border border-[var(--c-border)] pixel-border px-6 py-4 pr-32 text-lg text-white placeholder:text-[var(--c-muted)] focus:outline-none focus:ring-2 focus:ring-[#7B5CFF]"
-                  autoFocus
+                  ref={fileInputRef}
+                  type="file"
+                  accept=".pdf,.txt,.md,.csv"
+                  onChange={handleFileChange}
+                  className="hidden"
                 />
                 <button
-                  type="submit"
-                  disabled={!topic.trim()}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 bg-[var(--c-primary)] hover:bg-[var(--c-primary-hover)] disabled:opacity-50 text-white pixel-border-sm px-5 py-2.5 font-semibold transition-pixel"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="w-full pixel-border bg-[var(--c-surface)] border border-[var(--c-border)] border-dashed hover:border-[var(--c-primary)] hover:bg-[var(--c-primary)]/5 transition-pixel px-6 py-10 group"
                 >
-                  Generate
+                  <div className="flex flex-col items-center gap-3">
+                    <svg className="w-10 h-10 text-[var(--c-muted)] group-hover:text-[var(--c-primary)] transition-pixel" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    <span className="text-[var(--c-muted)] group-hover:text-[var(--c-fg)] font-medium transition-pixel">
+                      Drop a file or click to browse
+                    </span>
+                    <span className="font-[family-name:var(--font-press-start)] text-[8px] text-[var(--c-muted)]">
+                      PDF &bull; TXT &bull; MARKDOWN &bull; CSV
+                    </span>
+                  </div>
                 </button>
               </div>
-            </form>
+            )}
           </div>
         )}
 
@@ -232,11 +423,13 @@ function NewDeckPage() {
                 {stage === 'researching' ? 'Researching your topic...' : 'Generating flashcards...'}
               </h2>
               <p className="text-[var(--c-muted)] mb-1">
-                <span className="font-medium text-white">{topic}</span>
+                <span className="font-medium text-white">{fileName || topic}</span>
               </p>
               <p className="text-sm text-[var(--c-muted)]">
                 {stage === 'researching'
-                  ? 'Our AI is deep-diving into the topic and extracting key concepts.'
+                  ? fileName
+                    ? 'Extracting text and analyzing your document...'
+                    : 'Our AI is deep-diving into the topic and extracting key concepts.'
                   : 'Structuring Q&A pairs and writing dialogue scripts.'}
               </p>
             </div>
@@ -258,20 +451,31 @@ function NewDeckPage() {
             <div className="inline-flex items-center justify-center w-20 h-20  bg-[var(--c-danger)]/10 mb-6">
               <span className="text-4xl">!</span>
             </div>
-            <h2 className="text-2xl font-bold mb-2">Something went wrong</h2>
+            <h2 className="text-2xl font-bold mb-2">
+              {error.includes('Upgrade') ? 'Limit Reached' : 'Something went wrong'}
+            </h2>
             <p className="text-[var(--c-danger)] mb-6">{error}</p>
-            <div className="flex gap-3 justify-center">
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              {error.includes('Upgrade') ? (
+                <Link
+                  href="/pricing"
+                  className="bg-[var(--c-accent)] hover:bg-[var(--c-accent-hover)] text-[var(--c-bg)] pixel-border-sm px-6 py-3 font-semibold transition-pixel text-center"
+                >
+                  Upgrade to Pro
+                </Link>
+              ) : (
+                <button
+                  onClick={() => startResearch(topic)}
+                  className="bg-[var(--c-primary)] hover:bg-[var(--c-primary-hover)] text-white pixel-border-sm px-6 py-3 font-semibold transition-pixel"
+                >
+                  Try again
+                </button>
+              )}
               <button
-                onClick={() => startResearch(topic)}
-                className="bg-[var(--c-primary)] hover:bg-[var(--c-primary-hover)] text-white pixel-border-sm px-6 py-3 font-semibold transition-pixel"
-              >
-                Try again
-              </button>
-              <button
-                onClick={() => { setStage('input'); setError(''); }}
+                onClick={() => { setStage('input'); setError(''); setFileName(''); }}
                 className="bg-[var(--c-surface)] hover:bg-[var(--c-border)] border border-[var(--c-border)] text-white pixel-border-sm px-6 py-3 font-semibold transition-pixel"
               >
-                Change topic
+                Start over
               </button>
             </div>
           </div>
@@ -311,9 +515,9 @@ function NewDeckPage() {
                 </div>
               )}
 
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-3">
                 <Link
-                  href={`/study/${deckId}`}
+                  href={`/review/${deckId}`}
                   className="bg-[var(--c-primary)] hover:bg-[var(--c-primary-hover)] text-white pixel-border-sm px-6 py-3 font-semibold transition-pixel"
                 >
                   Start studying ({cards.length} cards)
@@ -345,7 +549,7 @@ function NewDeckPage() {
 
             {/* Podcast Subscribe */}
             <div className="mb-8">
-              <PodcastSubscribe feedUrl={`${typeof window !== 'undefined' ? window.location.origin : ''}/api/feed/demo-feed-token`} />
+              <PodcastSubscribe feedUrl={`${typeof window !== 'undefined' ? window.location.origin : ''}/api/feed/${deckId}`} />
             </div>
 
             <h2 className="text-xl font-semibold mb-4">Generated cards</h2>
@@ -399,7 +603,7 @@ function NewDeckPage() {
                           <span className="text-[var(--c-danger)]">Audio failed: {audio.error}</span>
                           <button
                             onClick={() => renderAudioForCard(card, cardId)}
-                            className="text-[var(--c-danger)] hover:text-white font-medium ml-2"
+                            className="text-[var(--c-danger)] hover:text-white font-medium ml-2 px-3 py-2"
                           >
                             Retry
                           </button>

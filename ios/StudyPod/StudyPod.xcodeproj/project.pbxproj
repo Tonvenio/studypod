@@ -1,0 +1,396 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		10CC810A4BBCFE555EAB8917 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570482EF2C5EEB8566C5543A /* GameState.swift */; };
+		1F08CC61B43460EEAD765126 /* ReviewSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68505CE3529B69B25E4E9D32 /* ReviewSessionView.swift */; };
+		2D3C84E320CD7EBE49B8F815 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AEBCC1342BF1FB72B5FB387 /* ProfileView.swift */; };
+		2FE15063E0FDC2F2C1EF358D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EF782AF0AED81B4040AB9790 /* Assets.xcassets */; };
+		4B28B7131ABA592EFFA62890 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = E42367CB0FBCCB18BB03EEB6 /* Models.swift */; };
+		4E87633B8FA30A44B260A215 /* AudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D258E03B28BBAC29A0B3E965 /* AudioPlayerView.swift */; };
+		4ECBB39C6C854F429DD730AB /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE469F7FBF9EFA2DECC4A928 /* AuthManager.swift */; };
+		6195D9FA5C589111143058A2 /* StudyPodApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD93BA660E5FEBFB3E00382 /* StudyPodApp.swift */; };
+		743AED4B5739D5E448A9E78D /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F24883457A90B53DCCFD85 /* DashboardView.swift */; };
+		908BEC2D64FAFFDCB61B59BD /* PixelTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CBA2CE7261067BC2FFA0AB /* PixelTheme.swift */; };
+		A6E573E7DCAA7A90B66A74FD /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C857335129C2AF12EB0E1EE /* MainTabView.swift */; };
+		AC3F32220196197984876BDD /* AudioPlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC8916441E4BBBAE9F499CD /* AudioPlayerManager.swift */; };
+		B141FD43ED661CF58D3C3F1B /* DecksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 186DCC6171E261ADE27A65A6 /* DecksView.swift */; };
+		CF6958C97709BF0ECBBF653A /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A70051626742E2975913B22 /* LoginView.swift */; };
+		D49640ED5A25F90608C0D332 /* SupabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C80907A1CEBC2D3D90345D9 /* SupabaseService.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		00EDCC748F8B59C8A901D4A7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		0EC8916441E4BBBAE9F499CD /* AudioPlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerManager.swift; sourceTree = "<group>"; };
+		186DCC6171E261ADE27A65A6 /* DecksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecksView.swift; sourceTree = "<group>"; };
+		1C857335129C2AF12EB0E1EE /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		2AEBCC1342BF1FB72B5FB387 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		4A70051626742E2975913B22 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		570482EF2C5EEB8566C5543A /* GameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
+		68505CE3529B69B25E4E9D32 /* ReviewSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewSessionView.swift; sourceTree = "<group>"; };
+		7C80907A1CEBC2D3D90345D9 /* SupabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseService.swift; sourceTree = "<group>"; };
+		80F24883457A90B53DCCFD85 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		886CD780F54A7A32C01A2916 /* StudyPod.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = StudyPod.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		ADD93BA660E5FEBFB3E00382 /* StudyPodApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyPodApp.swift; sourceTree = "<group>"; };
+		B6CBA2CE7261067BC2FFA0AB /* PixelTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PixelTheme.swift; sourceTree = "<group>"; };
+		BE469F7FBF9EFA2DECC4A928 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
+		D258E03B28BBAC29A0B3E965 /* AudioPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerView.swift; sourceTree = "<group>"; };
+		E42367CB0FBCCB18BB03EEB6 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		EF782AF0AED81B4040AB9790 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		09DB58674CBAFBECE52F87FB /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E42367CB0FBCCB18BB03EEB6 /* Models.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		18699064033EBAFAD7100F5E /* StudyPod */ = {
+			isa = PBXGroup;
+			children = (
+				EF782AF0AED81B4040AB9790 /* Assets.xcassets */,
+				00EDCC748F8B59C8A901D4A7 /* Info.plist */,
+				ADD93BA660E5FEBFB3E00382 /* StudyPodApp.swift */,
+				09DB58674CBAFBECE52F87FB /* Models */,
+				964838D0F8DD19643E8060E5 /* Services */,
+				B2C892A63925ACF71D56D2E6 /* Theme */,
+				1C21000FDAC0D4AADD3A4DDE /* ViewModels */,
+				B33F6334651D4F5F9F38A354 /* Views */,
+			);
+			path = StudyPod;
+			sourceTree = "<group>";
+		};
+		1C21000FDAC0D4AADD3A4DDE /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				BE469F7FBF9EFA2DECC4A928 /* AuthManager.swift */,
+				570482EF2C5EEB8566C5543A /* GameState.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		26423B8D9BD5EF5D2231226D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				886CD780F54A7A32C01A2916 /* StudyPod.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		71626279229A0A3DC6EBA3C4 = {
+			isa = PBXGroup;
+			children = (
+				18699064033EBAFAD7100F5E /* StudyPod */,
+				26423B8D9BD5EF5D2231226D /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		964838D0F8DD19643E8060E5 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				0EC8916441E4BBBAE9F499CD /* AudioPlayerManager.swift */,
+				7C80907A1CEBC2D3D90345D9 /* SupabaseService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		B2C892A63925ACF71D56D2E6 /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				B6CBA2CE7261067BC2FFA0AB /* PixelTheme.swift */,
+			);
+			path = Theme;
+			sourceTree = "<group>";
+		};
+		B33F6334651D4F5F9F38A354 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D258E03B28BBAC29A0B3E965 /* AudioPlayerView.swift */,
+				80F24883457A90B53DCCFD85 /* DashboardView.swift */,
+				186DCC6171E261ADE27A65A6 /* DecksView.swift */,
+				4A70051626742E2975913B22 /* LoginView.swift */,
+				1C857335129C2AF12EB0E1EE /* MainTabView.swift */,
+				2AEBCC1342BF1FB72B5FB387 /* ProfileView.swift */,
+				68505CE3529B69B25E4E9D32 /* ReviewSessionView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		3D7AE7A9CE85F454A4D6E606 /* StudyPod */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 330B25C6B1AE9883E2DB5A0C /* Build configuration list for PBXNativeTarget "StudyPod" */;
+			buildPhases = (
+				B492CDFCCBE23CA8B3B0FB70 /* Sources */,
+				4CA281991CDE63AE0977213F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = StudyPod;
+			packageProductDependencies = (
+			);
+			productName = StudyPod;
+			productReference = 886CD780F54A7A32C01A2916 /* StudyPod.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F7C7F4A411328FDB2BB523C3 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					3D7AE7A9CE85F454A4D6E606 = {
+						DevelopmentTeam = "";
+					};
+				};
+			};
+			buildConfigurationList = AFC2BDAE69E393488D14C69F /* Build configuration list for PBXProject "StudyPod" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 71626279229A0A3DC6EBA3C4;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				3D7AE7A9CE85F454A4D6E606 /* StudyPod */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		4CA281991CDE63AE0977213F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2FE15063E0FDC2F2C1EF358D /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B492CDFCCBE23CA8B3B0FB70 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AC3F32220196197984876BDD /* AudioPlayerManager.swift in Sources */,
+				4E87633B8FA30A44B260A215 /* AudioPlayerView.swift in Sources */,
+				4ECBB39C6C854F429DD730AB /* AuthManager.swift in Sources */,
+				743AED4B5739D5E448A9E78D /* DashboardView.swift in Sources */,
+				B141FD43ED661CF58D3C3F1B /* DecksView.swift in Sources */,
+				10CC810A4BBCFE555EAB8917 /* GameState.swift in Sources */,
+				CF6958C97709BF0ECBBF653A /* LoginView.swift in Sources */,
+				A6E573E7DCAA7A90B66A74FD /* MainTabView.swift in Sources */,
+				4B28B7131ABA592EFFA62890 /* Models.swift in Sources */,
+				908BEC2D64FAFFDCB61B59BD /* PixelTheme.swift in Sources */,
+				2D3C84E320CD7EBE49B8F815 /* ProfileView.swift in Sources */,
+				1F08CC61B43460EEAD765126 /* ReviewSessionView.swift in Sources */,
+				6195D9FA5C589111143058A2 /* StudyPodApp.swift in Sources */,
+				D49640ED5A25F90608C0D332 /* SupabaseService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		9AF75E1CB571B50FD294EF08 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		A7E63589C519CDFD0097F684 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = StudyPod/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.studypod.app;
+				SDKROOT = iphoneos;
+				SWIFT_STRICT_CONCURRENCY = minimal;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		B99BBB2DB44CD96D969EF0EF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		C860065A4F2FCC989E390657 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = StudyPod/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.studypod.app;
+				SDKROOT = iphoneos;
+				SWIFT_STRICT_CONCURRENCY = minimal;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		330B25C6B1AE9883E2DB5A0C /* Build configuration list for PBXNativeTarget "StudyPod" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A7E63589C519CDFD0097F684 /* Debug */,
+				C860065A4F2FCC989E390657 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		AFC2BDAE69E393488D14C69F /* Build configuration list for PBXProject "StudyPod" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9AF75E1CB571B50FD294EF08 /* Debug */,
+				B99BBB2DB44CD96D969EF0EF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F7C7F4A411328FDB2BB523C3 /* Project object */;
+}

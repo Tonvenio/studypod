@@ -1,28 +1,114 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import Nav from '@/components/Nav';
 import FlashcardPlayer from '@/components/FlashcardPlayer';
-
-const MOCK_CARDS = [
-  { id: '1', front: 'What is photosynthesis?', back: 'The process by which plants convert light energy into chemical energy using CO2 and water.', explanation: '6CO2 + 6H2O + light energy = C6H12O6 + 6O2', audioUrl: null, difficulty: 2 },
-  { id: '2', front: 'Where does photosynthesis primarily occur?', back: 'In the chloroplasts of plant cells, specifically in the thylakoid membranes and stroma.', explanation: 'Chloroplasts contain chlorophyll, the green pigment that captures light energy.', audioUrl: null, difficulty: 1 },
-  { id: '3', front: 'What are the two main stages of photosynthesis?', back: 'Light-dependent reactions (thylakoid membranes) and the Calvin cycle / light-independent reactions (stroma).', explanation: 'Light reactions produce ATP and NADPH; the Calvin cycle uses them to fix CO2 into glucose.', audioUrl: null, difficulty: 3 },
-];
+import { getLocalDeck } from '@/lib/deck-store';
 
 type Rating = 'again' | 'hard' | 'good' | 'easy';
 
+interface StudyCard {
+  id: string;
+  front: string;
+  back: string;
+  explanation: string;
+  audioUrl: string | null;
+  difficulty: number;
+}
+
 export default function StudyPage() {
+  const params = useParams();
+  const deckId = params.deckId as string;
+  const [cards, setCards] = useState<StudyCard[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [ratings, setRatings] = useState<Record<string, Rating>>({});
   const [isComplete, setIsComplete] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [deckTopic, setDeckTopic] = useState('');
 
-  const cards = MOCK_CARDS;
+  useEffect(() => {
+    async function loadCards() {
+      // Try localStorage first
+      const localDeck = getLocalDeck(deckId);
+      if (localDeck) {
+        setDeckTopic(localDeck.topic);
+        setCards(localDeck.cards.map((c, i) => ({
+          id: `${deckId}-${i}`,
+          front: c.front,
+          back: c.back,
+          explanation: c.explanation,
+          audioUrl: c.audioUrl,
+          difficulty: c.difficulty,
+        })));
+        setLoading(false);
+        return;
+      }
+
+      // Try Supabase
+      try {
+        const { createClient } = await import('@/lib/supabase/client');
+        const supabase = createClient();
+
+        const { data: deck } = await supabase
+          .from('decks')
+          .select('topic')
+          .eq('id', deckId)
+          .single();
+
+        if (deck) setDeckTopic(deck.topic);
+
+        const { data: flashcards } = await supabase
+          .from('flashcards')
+          .select('id, front, back, explanation, audio_url, difficulty, order_index')
+          .eq('deck_id', deckId)
+          .order('order_index', { ascending: true });
+
+        if (flashcards && flashcards.length > 0) {
+          setCards(flashcards.map((c) => ({
+            id: c.id,
+            front: c.front,
+            back: c.back,
+            explanation: c.explanation || '',
+            audioUrl: c.audio_url,
+            difficulty: c.difficulty || 3,
+          })));
+        }
+      } catch (err) {
+        console.error('Failed to load cards:', err);
+      }
+      setLoading(false);
+    }
+    loadCards();
+  }, [deckId]);
+
+  if (loading) {
+    return (
+      <main className="min-h-screen bg-[var(--c-bg)] text-[var(--c-fg)] flex items-center justify-center">
+        <p className="font-[family-name:var(--font-press-start)] text-xs text-[var(--c-muted)]">LOADING...</p>
+      </main>
+    );
+  }
+
+  if (cards.length === 0) {
+    return (
+      <main className="min-h-screen bg-[var(--c-bg)] text-[var(--c-fg)] flex items-center justify-center">
+        <div className="text-center px-4">
+          <p className="font-[family-name:var(--font-press-start)] text-sm text-[var(--c-xp)] mb-4">NO CARDS FOUND</p>
+          <p className="text-[var(--c-muted)] mb-6">This deck doesn&apos;t exist or has no cards.</p>
+          <Link href="/" className="pixel-border-sm bg-[var(--c-primary)] text-white px-6 py-3 font-semibold transition-pixel">
+            CREATE A DECK
+          </Link>
+        </div>
+      </main>
+    );
+  }
+
   const currentCard = cards[currentIndex];
 
   const handleRate = (rating: Rating) => {
     setRatings((prev) => ({ ...prev, [currentCard.id]: rating }));
-
     if (currentIndex < cards.length - 1) {
       setCurrentIndex((i) => i + 1);
     } else {
@@ -35,24 +121,21 @@ export default function StudyPage() {
     return (
       <main className="min-h-screen bg-[var(--c-bg)] text-[var(--c-fg)] flex items-center justify-center">
         <div className="text-center max-w-md mx-auto px-4">
-          <div className="text-6xl mb-4">&#9876;&#65039;</div>
           <h1 className="font-[family-name:var(--font-press-start)] text-2xl mb-2 text-[var(--c-xp)]">QUEST COMPLETE!</h1>
-          <p className="text-[var(--c-muted)] mb-2">
-            You studied {cards.length} cards
-          </p>
+          <p className="text-[var(--c-muted)] mb-2">You studied {cards.length} cards</p>
           <div className="pixel-border bg-[var(--c-surface)] p-4 mb-6 inline-block">
             <span className="font-[family-name:var(--font-press-start)] text-lg text-[var(--c-accent)]">{correct}/{cards.length}</span>
             <span className="text-[var(--c-muted)] ml-2 text-sm">cards mastered</span>
           </div>
           <div className="flex gap-3 justify-center">
-            <button
-              onClick={() => { setCurrentIndex(0); setRatings({}); setIsComplete(false); }}
+            <Link
+              href={`/review/${deckId}`}
               className="pixel-border-sm bg-[var(--c-primary)] hover:bg-[var(--c-primary-hover)] text-white px-6 py-3 font-semibold transition-pixel"
             >
-              Study again
-            </button>
-            <Link href="/" className="pixel-border-sm bg-[var(--c-surface)] hover:bg-[var(--c-surface-hover)] border-2 border-[var(--c-border)] text-white px-6 py-3 font-semibold transition-pixel">
-              Home
+              Spaced review
+            </Link>
+            <Link href="/dashboard" className="pixel-border-sm bg-[var(--c-surface)] hover:bg-[var(--c-surface-hover)] border-2 border-[var(--c-border)] text-white px-6 py-3 font-semibold transition-pixel">
+              Dashboard
             </Link>
           </div>
         </div>
@@ -62,18 +145,12 @@ export default function StudyPage() {
 
   return (
     <main className="min-h-screen bg-[var(--c-bg)] text-[var(--c-fg)] flex flex-col">
-      <nav className="border-b-2 border-[var(--c-border)]">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-          <Link href="/" className="font-[family-name:var(--font-press-start)] text-sm">
-            <span className="text-[var(--c-primary)]">study</span><span className="text-[var(--c-fg)]">pod</span><span className="text-[var(--c-accent)]">.ai</span>
-          </Link>
-          <Link href="/" className="text-sm text-[var(--c-muted)] hover:text-white transition-pixel">
-            Exit
-          </Link>
-        </div>
-      </nav>
+      <Nav rightContent={<>
+        {deckTopic && <span className="text-xs text-[var(--c-muted)] hidden sm:block">{deckTopic}</span>}
+        <Link href="/dashboard" className="text-xs text-[var(--c-muted)] hover:text-[var(--c-fg)] transition-pixel py-2">Exit</Link>
+      </>} />
 
-      <div className="flex-1 flex items-center justify-center px-4 py-12">
+      <div className="flex-1 flex items-center justify-center px-3 sm:px-4 py-4 sm:py-12">
         <FlashcardPlayer
           front={currentCard.front}
           back={currentCard.back}

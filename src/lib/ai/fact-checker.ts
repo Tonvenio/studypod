@@ -1,6 +1,5 @@
 import type { ResearchResult } from '@/types/research';
-
-const GEMINI_API = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent';
+import { GEMINI_TEXT_API } from './gemini-config';
 
 interface FlashcardToCheck {
   front: string;
@@ -90,7 +89,7 @@ Be strict but fair. Minor phrasing differences are fine (pass). Wrong facts must
 
 Return ONLY valid JSON array, no markdown fences.`;
 
-  const response = await fetch(`${GEMINI_API}?key=${apiKey}`, {
+  const response = await fetch(`${GEMINI_TEXT_API}?key=${apiKey}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({

@@ -74,7 +74,7 @@ export default function FlashcardPlayer({
 
       {/* Card */}
       <div
-        className="relative w-full aspect-[3/2] cursor-pointer"
+        className="relative w-full min-h-[200px] sm:min-h-[280px] aspect-auto sm:aspect-[3/2] cursor-pointer"
         style={{ perspective: '1000px' }}
         onClick={flip}
       >
@@ -86,17 +86,17 @@ export default function FlashcardPlayer({
         >
           {/* Front */}
           <div
-            className="absolute inset-0 pixel-border bg-[var(--c-surface)] border-2 border-[var(--c-border)] p-8 flex flex-col items-center justify-center text-center"
+            className="absolute inset-0 pixel-border bg-[var(--c-surface)] border-2 border-[var(--c-border)] p-5 sm:p-8 flex flex-col items-center justify-center text-center"
             style={{ backfaceVisibility: 'hidden' }}
           >
-            <span className="font-[family-name:var(--font-press-start)] text-[8px] text-[var(--c-primary)] uppercase tracking-wider mb-4">QUESTION</span>
-            <p className="text-xl md:text-2xl font-semibold leading-relaxed">{front}</p>
-            <p className="font-[family-name:var(--font-press-start)] text-[8px] text-[var(--c-muted)] mt-6">PRESS SPACE TO REVEAL</p>
+            <span className="font-[family-name:var(--font-press-start)] text-[8px] text-[var(--c-primary)] uppercase tracking-wider mb-3 sm:mb-4">QUESTION</span>
+            <p className="text-lg sm:text-xl md:text-2xl font-semibold leading-relaxed">{front}</p>
+            <p className="font-[family-name:var(--font-press-start)] text-[8px] text-[var(--c-muted)] mt-6">TAP TO REVEAL</p>
           </div>
 
           {/* Back */}
           <div
-            className="absolute inset-0 pixel-border bg-[var(--c-surface)] border-2 border-[#7B5CFF]/40 p-8 flex flex-col items-center justify-center text-center overflow-y-auto"
+            className="absolute inset-0 pixel-border bg-[var(--c-surface)] border-2 border-[#7B5CFF]/40 p-5 sm:p-8 flex flex-col items-center justify-center text-center overflow-y-auto"
             style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
           >
             <span className="font-[family-name:var(--font-press-start)] text-[8px] text-[var(--c-accent)] uppercase tracking-wider mb-4">ANSWER</span>

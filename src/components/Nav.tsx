@@ -1,16 +1,37 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import ThemeToggle from './ThemeToggle';
 
 interface NavProps {
-  showDashboard?: boolean;
-  showMobile?: boolean;
-  showSignUp?: boolean;
   rightContent?: React.ReactNode;
 }
 
-export default function Nav({ showDashboard = false, showMobile = false, showSignUp = false, rightContent }: NavProps) {
+export default function Nav({ rightContent }: NavProps) {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    async function checkAuth() {
+      try {
+        const { createClient } = await import('@/lib/supabase/client');
+        const supabase = createClient();
+        const { data: { user } } = await supabase.auth.getUser();
+        setIsLoggedIn(!!user);
+      } catch {}
+    }
+    checkAuth();
+  }, []);
+
+  const handleSignOut = async () => {
+    try {
+      const { createClient } = await import('@/lib/supabase/client');
+      const supabase = createClient();
+      await supabase.auth.signOut();
+      window.location.href = '/';
+    } catch {}
+  };
+
   return (
     <nav className="border-b-2 border-[var(--c-border)]">
       <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
@@ -20,19 +41,16 @@ export default function Nav({ showDashboard = false, showMobile = false, showSig
           <span className="text-[var(--c-accent)]">.ai</span>
         </Link>
         <div className="flex items-center gap-3">
-          {showDashboard && (
-            <Link href="/dashboard" className="text-xs text-[var(--c-muted)] hover:text-[var(--c-fg)] transition-pixel">
-              Dashboard
-            </Link>
-          )}
-          {showMobile && (
-            <Link href="/guide/mobile-listening" className="text-xs text-[var(--c-muted)] hover:text-[var(--c-fg)] transition-pixel">
-              Mobile
-            </Link>
-          )}
           {rightContent}
           <ThemeToggle />
-          {showSignUp && (
+          {isLoggedIn ? (
+            <button
+              onClick={handleSignOut}
+              className="text-xs text-[var(--c-muted)] hover:text-[var(--c-danger)] transition-pixel py-2"
+            >
+              Sign out
+            </button>
+          ) : (
             <Link
               href="/auth/register"
               className="pixel-border-sm bg-[var(--c-primary)] text-white text-xs font-bold px-4 py-2 hover:bg-[var(--c-primary-hover)] transition-pixel"

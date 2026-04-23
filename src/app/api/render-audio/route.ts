@@ -3,9 +3,10 @@ import { writeDialogue } from '@/lib/ai/dialogue-writer';
 import { renderSegments } from '@/lib/audio/tts-renderer';
 import { processAudio } from '@/lib/audio/audio-processor';
 import { preprocessForTTS } from '@/lib/audio/pronunciation';
-import { existsSync, mkdirSync } from 'fs';
+import { existsSync, mkdirSync, readFileSync } from 'fs';
 import path from 'path';
 import os from 'os';
+import { uploadAudio } from '@/lib/audio/storage';
 
 const AUDIO_DIR = path.join(os.tmpdir(), 'studypod-audio');
 
@@ -64,9 +65,33 @@ export async function POST(request: NextRequest) {
       silenceBetweenMs: 150,
     });
 
+    // Upload to Supabase Storage and update flashcard record
+    let audioUrl = `/api/audio/${outputFilename}`;
+    try {
+      const buffer = readFileSync(outputPath);
+      const storagePath = `${card.deckId || 'anonymous'}/${card.id}.mp3`;
+      const uploaded = await uploadAudio(buffer, storagePath);
+      audioUrl = uploaded.publicUrl;
+
+      // Update flashcard audio_url in database
+      if (card.flashcardDbId) {
+        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+        const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+        if (supabaseUrl && serviceKey) {
+          const { createClient } = await import('@supabase/supabase-js');
+          const supabase = createClient(supabaseUrl, serviceKey);
+          await supabase.from('flashcards')
+            .update({ audio_url: audioUrl, audio_storage_path: storagePath })
+            .eq('id', card.flashcardDbId);
+        }
+      }
+    } catch (err) {
+      console.error('Audio upload error (falling back to local):', err);
+    }
+
     return NextResponse.json({
       cardId: card.id,
-      audioUrl: `/api/audio/${outputFilename}`,
+      audioUrl,
       durationSeconds: result.durationSeconds,
       transcript: result.transcript,
     });

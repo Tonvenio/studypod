@@ -6,7 +6,12 @@ import Link from 'next/link';
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [error, setError] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return new URLSearchParams(window.location.search).get('error') || '';
+    }
+    return '';
+  });
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -19,7 +24,8 @@ export default function LoginPage() {
       const supabase = mod.createClient();
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
-      window.location.href = '/dashboard';
+      const params = new URLSearchParams(window.location.search);
+      window.location.href = params.get('redirect') || '/dashboard';
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Login failed');
     } finally {
@@ -28,7 +34,7 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[var(--c-bg)] text-[var(--c-fg)] flex items-center justify-center px-4">
+    <main className="min-h-dvh bg-[var(--c-bg)] text-[var(--c-fg)] flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <Link href="/" className="font-[family-name:var(--font-press-start)] text-sm inline-block mb-6">
@@ -47,7 +53,7 @@ export default function LoginPage() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full pixel-border bg-[var(--c-surface)] px-4 py-3 text-[var(--c-fg)] placeholder:text-[var(--c-muted)] focus:outline-none"
+              className="w-full pixel-border bg-[var(--c-surface)] px-4 py-3.5 text-base text-[var(--c-fg)] placeholder:text-[var(--c-muted)] focus:outline-none"
               placeholder="your@email.com"
               required
             />
@@ -58,7 +64,7 @@ export default function LoginPage() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full pixel-border bg-[var(--c-surface)] px-4 py-3 text-[var(--c-fg)] placeholder:text-[var(--c-muted)] focus:outline-none"
+              className="w-full pixel-border bg-[var(--c-surface)] px-4 py-3.5 text-base text-[var(--c-fg)] placeholder:text-[var(--c-muted)] focus:outline-none"
               placeholder="••••••••"
               required
             />

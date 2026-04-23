@@ -8,7 +8,13 @@ export async function GET(request: NextRequest) {
 
   if (code) {
     const supabase = await createClient();
-    await supabase.auth.exchangeCodeForSession(code);
+    const { error } = await supabase.auth.exchangeCodeForSession(code);
+
+    if (error) {
+      const loginUrl = new URL('/auth/login', request.url);
+      loginUrl.searchParams.set('error', 'Authentication failed. Please try again.');
+      return NextResponse.redirect(loginUrl);
+    }
   }
 
   return NextResponse.redirect(new URL('/dashboard', request.url));

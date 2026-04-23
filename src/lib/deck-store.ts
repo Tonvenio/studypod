@@ -1,5 +1,3 @@
-import type { Deck, Flashcard } from '@/types/flashcard';
-
 const STORAGE_KEY = 'studypod-decks';
 
 interface SavedDeck {
@@ -20,7 +18,7 @@ interface SavedDeck {
 /** Save a deck locally (guest mode) */
 export function saveLocalDeck(deck: SavedDeck): void {
   const existing = getLocalDecks();
-  const updated = [deck, ...existing.filter((d) => d.id !== deck.id)].slice(0, 20); // Max 20 decks
+  const updated = [deck, ...existing.filter((d) => d.id !== deck.id)].slice(0, 20);
   localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
 }
 
@@ -45,7 +43,7 @@ export function deleteLocalDeck(id: string): void {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(existing.filter((d) => d.id !== id)));
 }
 
-/** Save deck to Supabase (logged-in users) */
+/** Save deck to Supabase (logged-in users). Returns the real DB deck ID (UUID). */
 export async function saveRemoteDeck(deck: SavedDeck): Promise<string | null> {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -58,11 +56,16 @@ export async function saveRemoteDeck(deck: SavedDeck): Promise<string | null> {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return null;
 
-    // Upsert deck
+    // Ensure profile exists (created on signup via trigger or manually)
+    await supabase.from('profiles').upsert({
+      id: user.id,
+      username: user.user_metadata?.username || user.email?.split('@')[0] || 'user',
+    }, { onConflict: 'id', ignoreDuplicates: true });
+
+    // Insert deck (let DB generate UUID)
     const { data: deckData, error: deckError } = await supabase
       .from('decks')
-      .upsert({
-        id: deck.id,
+      .insert({
         user_id: user.id,
         topic: deck.topic,
         description: deck.description,
@@ -73,24 +76,41 @@ export async function saveRemoteDeck(deck: SavedDeck): Promise<string | null> {
       .select('id')
       .single();
 
-    if (deckError || !deckData) return null;
+    if (deckError || !deckData) {
+      console.error('Deck save error:', deckError);
+      throw new Error(`Failed to save deck: ${deckError?.message || 'unknown error'}`);
+    }
 
-    // Insert cards
-    for (let i = 0; i < deck.cards.length; i++) {
-      const card = deck.cards[i];
-      await supabase.from('flashcards').upsert({
-        deck_id: deckData.id,
-        front: card.front,
-        back: card.back,
-        explanation: card.explanation,
-        difficulty: card.difficulty,
-        audio_url: card.audioUrl,
-        order_index: i,
-      });
+    // Bulk insert cards
+    const cardRows = deck.cards.map((card, i) => ({
+      deck_id: deckData.id,
+      front: card.front,
+      back: card.back,
+      explanation: card.explanation,
+      difficulty: card.difficulty,
+      audio_url: card.audioUrl,
+      order_index: i,
+    }));
+
+    const { error: cardsError } = await supabase.from('flashcards').insert(cardRows);
+    if (cardsError) {
+      console.error('Cards save error:', cardsError);
+    }
+
+    // Update profile deck count
+    const { count } = await supabase
+      .from('decks')
+      .select('*', { count: 'exact', head: true })
+      .eq('user_id', user.id);
+    if (count !== null) {
+      await supabase.from('profiles').update({ total_decks_created: count }).eq('id', user.id);
     }
 
     return deckData.id;
-  } catch {
+  } catch (err) {
+    console.error('saveRemoteDeck error:', err);
     return null;
   }
 }
+
+export type { SavedDeck };

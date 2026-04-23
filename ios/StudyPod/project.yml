@@ -1,0 +1,23 @@
+name: StudyPod
+options:
+  bundleIdPrefix: ai.studypod
+  deploymentTarget:
+    iOS: "18.0"
+  xcodeVersion: "16.0"
+settings:
+  SWIFT_VERSION: "5.0"
+  DEVELOPMENT_TEAM: ""
+targets:
+  StudyPod:
+    type: application
+    platform: iOS
+    sources:
+      - StudyPod
+    info:
+      path: StudyPod/Info.plist
+    settings:
+      INFOPLIST_FILE: StudyPod/Info.plist
+      PRODUCT_BUNDLE_IDENTIFIER: ai.studypod.app
+      TARGETED_DEVICE_FAMILY: "1"
+      ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+      SWIFT_STRICT_CONCURRENCY: minimal
