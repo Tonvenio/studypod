@@ -1,4 +1,5 @@
 import { renderEdgeTTS, getEdgeVoice } from './edge-tts';
+import { renderXaiTTS, getXaiVoice } from './xai-tts';
 import { existsSync, mkdirSync, writeFileSync } from 'fs';
 import { execSync } from 'child_process';
 import path from 'path';
@@ -56,7 +57,15 @@ export async function renderSegments(options: TTSOptions): Promise<RenderedSegme
 
     const outputPath = path.join(outputDir, `segment-${String(i).padStart(3, '0')}-${seg.speaker}.mp3`);
 
-    if (seg.speaker === 'A') {
+    if (process.env.XAI_API_KEY) {
+      // x.ai TTS for both speakers
+      await renderXaiTTS({
+        text: seg.text,
+        voice: getXaiVoice(seg.speaker),
+        language,
+        outputPath,
+      });
+    } else if (seg.speaker === 'A') {
       // Female voice via Edge TTS
       await renderEdgeTTS({
         text: seg.text,

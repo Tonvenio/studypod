@@ -47,6 +47,7 @@ The app runs on `http://localhost:3011`.
 | `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anonymous key |
 | `GEMINI_API_KEY` | Google Gemini API key |
+| `XAI_API_KEY` | x.ai API key (optional — enables x.ai TTS voices) |
 
 ## License
 
