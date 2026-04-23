@@ -15,8 +15,6 @@ AI-powered audio flashcard generator. Enter any topic or upload a document — t
 - **Gamification** — XP, levels, streaks, daily quests, combos, and badges
 - **Mobile Listening** — subscribe via podcast apps or listen in-browser
 
-![Deck Creation](public/images/screenshots/deck-creation.png)
-
 ## Tech Stack
 
 - **Framework:** Next.js 16 (App Router)
