@@ -6,11 +6,11 @@ AI-powered audio flashcard generator. Enter any topic or upload a document — t
 
 ## Features
 
+- **Document Upload** — generate cards from your own PDFs, TXT, Markdown, or CSV files
 - **AI Research** — Gemini deep-dives any topic and extracts key concepts
 - **Flashcard Generation** — fact-checked Q&A cards with explanations
 - **Audio Dialogues** — two-host podcast-style MP3s via hybrid TTS
 - **Anki Export** — download `.apkg` decks for spaced repetition
-- **Document Upload** — generate cards from your own PDFs and notes
 - **Spaced Repetition Review** — built-in SRS with SM-2 scheduling
 - **Gamification** — XP, levels, streaks, daily quests, combos, and badges
 - **Mobile Listening** — subscribe via podcast apps or listen in-browser
