@@ -86,8 +86,8 @@ function NewDeckPage() {
     if (initialTopic) {
       startResearch(initialTopic);
     } else if (searchParams.get('pending') === 'true') {
-      // Pick up file from in-memory store (set by HeroUploadLink)
-      import('@/components/HeroUploadLink').then(({ getPendingFile }) => {
+      // Pick up file from in-memory store (set by HeroInput)
+      import('@/components/HeroInput').then(({ getPendingFile }) => {
         const file = getPendingFile();
         if (file) {
           setMode('upload');

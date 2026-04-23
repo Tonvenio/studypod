@@ -1,5 +1,5 @@
 import type { ResearchResult } from '@/types/research';
-import { GEMINI_TEXT_API } from './gemini-config';
+import { GEMINI_TEXT_API, parseGeminiJSON } from './gemini-config';
 
 interface GeneratedFlashcard {
   front: string;
@@ -62,7 +62,7 @@ Return ONLY valid JSON array, no markdown fences.`;
   const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
   if (!text) throw new Error('Empty response from Gemini');
 
-  const cards: GeneratedFlashcard[] = JSON.parse(text);
+  const cards: GeneratedFlashcard[] = parseGeminiJSON(text);
 
   return cards.map((card) => ({
     front: card.front.trim(),

@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import Nav from '@/components/Nav';
 import PixelStudyAnimation from '@/components/PixelStudyAnimation';
-import HeroUploadLink from '@/components/HeroUploadLink';
+import HeroInput from '@/components/HeroInput';
+import AppStoreButton from '@/components/AppStoreButton';
 
 const QUESTS = [
   { topic: 'Photosynthesis', level: 3 },
@@ -50,39 +51,8 @@ export default function HomePage() {
             <PixelStudyAnimation />
           </div>
 
-          {/* Search — pixel styled */}
-          <div className="max-w-xl mx-auto mb-4 px-1">
-            <form action="/deck/new">
-              <div className="pixel-border bg-[var(--c-surface)] p-1 relative">
-                <input
-                  type="text"
-                  name="topic"
-                  placeholder="Enter your study topic..."
-                  className="w-full bg-transparent px-4 sm:px-5 py-3.5 sm:py-4 sm:pr-32 text-[var(--c-fg)] placeholder:text-[var(--c-muted)] focus:outline-none text-base sm:text-lg"
-                />
-                <button
-                  type="submit"
-                  className="hidden sm:block absolute right-3 top-1/2 -translate-y-1/2 pixel-border-sm bg-[var(--c-accent)] text-[var(--c-bg)] font-bold px-5 py-2.5 text-sm hover:bg-[var(--c-accent-hover)] transition-pixel"
-                >
-                  GENERATE
-                </button>
-              </div>
-              <button
-                type="submit"
-                className="sm:hidden w-full mt-2 pixel-border-sm bg-[var(--c-accent)] text-[var(--c-bg)] font-bold px-5 py-3 text-sm hover:bg-[var(--c-accent-hover)] transition-pixel"
-              >
-                GENERATE
-              </button>
-            </form>
-
-            {/* Upload document link */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 mt-3">
-              <p className="font-[family-name:var(--font-press-start)] text-[7px] sm:text-[8px] text-[var(--c-muted)]">
-                FREE &bull; NO ACCOUNT REQUIRED
-              </p>
-              <HeroUploadLink />
-            </div>
-          </div>
+          {/* Input — topic or upload */}
+          <HeroInput />
         </div>
       </section>
 
@@ -143,6 +113,19 @@ export default function HomePage() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* App Store CTA */}
+      <section className="py-10 sm:py-14 text-center">
+        <div className="max-w-3xl mx-auto px-4">
+          <h2 className="font-[family-name:var(--font-press-start)] text-xs sm:text-sm text-[var(--c-accent)] mb-3 pixel-shadow">
+            &#9654; STUDY ON THE GO
+          </h2>
+          <p className="text-[var(--c-muted)] text-sm mb-6">
+            Listen to your audio flashcards anywhere with the iOS app.
+          </p>
+          <AppStoreButton className="mx-auto" />
         </div>
       </section>
 

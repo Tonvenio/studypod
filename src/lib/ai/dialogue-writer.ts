@@ -1,5 +1,5 @@
 import type { DialogueScript } from '@/types/audio';
-import { GEMINI_TEXT_API } from './gemini-config';
+import { GEMINI_TEXT_API, parseGeminiJSON } from './gemini-config';
 
 interface FlashcardInput {
   id: string;
@@ -234,5 +234,5 @@ Return ONLY valid JSON array, no markdown fences.`;
   const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
   if (!text) throw new Error('Empty response from Gemini');
 
-  return JSON.parse(text);
+  return parseGeminiJSON(text);
 }

@@ -1,5 +1,5 @@
 import type { ResearchResult } from '@/types/research';
-import { GEMINI_TEXT_API } from './gemini-config';
+import { GEMINI_TEXT_API, parseGeminiJSON } from './gemini-config';
 
 interface ResearchOptions {
   topic: string;
@@ -73,7 +73,7 @@ Return ONLY valid JSON, no markdown fences.`;
   const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
   if (!text) throw new Error('Empty response from Gemini');
 
-  const result: ResearchResult = JSON.parse(text);
+  const result: ResearchResult = parseGeminiJSON(text);
   result.language = language;
   result.generatedAt = new Date().toISOString();
 
@@ -148,7 +148,7 @@ Return ONLY valid JSON, no markdown fences.`;
   const resultText = data.candidates?.[0]?.content?.parts?.[0]?.text;
   if (!resultText) throw new Error('Empty response from Gemini');
 
-  const result: ResearchResult = JSON.parse(resultText);
+  const result: ResearchResult = parseGeminiJSON(resultText);
   result.language = language;
   result.generatedAt = new Date().toISOString();
 

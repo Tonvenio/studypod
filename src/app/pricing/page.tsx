@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Nav from '@/components/Nav';
+import AppStoreButton from '@/components/AppStoreButton';
 import { PRICES } from '@/lib/billing/plans';
 
 export default function PricingPage() {
@@ -160,6 +161,11 @@ export default function PricingPage() {
         <p className="text-center text-xs text-[var(--c-muted)] mt-8">
           All prices include VAT. Cancel anytime. Payments handled securely by LemonSqueezy.
         </p>
+
+        <div className="text-center mt-10">
+          <p className="font-[family-name:var(--font-press-start)] text-[10px] text-[var(--c-muted)] mb-4">ALSO AVAILABLE ON</p>
+          <AppStoreButton className="mx-auto" />
+        </div>
       </div>
     </main>
   );

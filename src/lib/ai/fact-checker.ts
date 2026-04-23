@@ -1,5 +1,5 @@
 import type { ResearchResult } from '@/types/research';
-import { GEMINI_TEXT_API } from './gemini-config';
+import { GEMINI_TEXT_API, parseGeminiJSON } from './gemini-config';
 
 interface FlashcardToCheck {
   front: string;
@@ -119,7 +119,7 @@ Return ONLY valid JSON array, no markdown fences.`;
 
   let results: FactCheckResult[];
   try {
-    results = JSON.parse(text);
+    results = parseGeminiJSON(text);
   } catch {
     console.error('Fact-check returned invalid JSON, skipping');
     return { cards, report: { results: [], removedCount: 0, fixedCount: 0 } };
